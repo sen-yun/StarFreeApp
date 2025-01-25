@@ -1,0 +1,601 @@
+{
+	"easycom": {
+	    "^tn-(.*)": "@/uni_modules/tuniao-ui/components/tn-$1/tn-$1.vue",
+		"^u-(.*)": "@/uni_modules/uview-ui/components/u-$1/u-$1.vue"
+	  },
+	"pages": [
+		{
+			"path": "pages/home/home",
+			"style": {
+				"enablePullDownRefresh":true
+			},
+			
+			"app-plus":{
+				"pullToRefresh":{
+					"color":"#3cc9a4",
+					"style":"circle"
+				}
+				
+			}
+		},
+		{
+			"path": "pages/home/find",
+			"style": {
+				"enablePullDownRefresh":true
+			},
+			
+			"app-plus":{
+				"pullToRefresh":{
+					"color":"#3cc9a4",
+					"style":"circle"
+				}
+				
+			}
+		},
+		{
+			"path": "pages/home/square",
+			
+			"app-plus":{
+				"pullToRefresh":{
+					"color":"#3cc9a4",
+					"style":"circle"
+				}
+				
+			}
+		},
+		{
+			"path": "pages/home/tool",
+			"style": {
+				"enablePullDownRefresh":true
+			},
+			
+			"app-plus":{
+				"pullToRefresh":{
+					"color":"#3cc9a4",
+					"style":"circle"
+				}
+				
+			}
+		},
+		{
+			"path": "pages/home/user",
+			"style": {}
+		},
+		{
+			"path": "pages/user/userlist",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/user/fanList",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/user/followList",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/user/useredit",
+			"style": {}
+		},
+		{
+			"path": "pages/user/phoneedit",
+			"style": {}
+		},
+		{
+			"path": "pages/user/mailedit",
+			"style": {}
+		},
+		{
+			"path": "pages/user/media",
+			"style": {}
+		},
+		{
+			"path": "pages/user/scan",
+			"style": {}
+		},
+		{
+			"path": "pages/user/inbox",
+			"style": {}
+		},
+		// #ifdef APP-PLUS || H5
+		{
+			"path": "pages/user/userpost",
+			"style": {
+				"enablePullDownRefresh":true
+			},
+			
+			"app-plus":{
+				"pullToRefresh":{
+					"color":"#3cc9a4",
+					"style":"circle"
+				}
+				
+			}
+		},
+		{
+			"path": "pages/user/post",
+			"style": {},
+			"app-plus": {
+				"softinputMode": "adjustResize"
+			}
+		},
+		// #endif
+		{
+			"path": "pages/user/login",
+			"style": {
+				"softinputMode": "adjustResize"
+			}
+		},
+		{
+			"path": "pages/user/foget",
+			"style": {
+				"softinputMode": "adjustResize"
+			}
+		},
+		{
+			"path": "pages/user/register",
+			"style": {
+				"softinputMode": "adjustResize"
+			}
+		},
+		{
+			"path": "pages/user/setup",
+			"style": {}
+		},
+		// #ifdef APP-PLUS || H5
+		{
+			"path": "pages/user/usercomments",
+			"style": {}
+		},
+		{
+			"path": "pages/user/buyvip",
+			"style": {}
+		},
+		{
+			"path": "pages/user/clothes",
+			"style": {}
+		},
+		// #endif
+		{
+			"path": "pages/user/usermark",
+			"style": {}
+		},
+		// #ifdef APP-PLUS || H5
+		{
+			"path": "pages/user/address",
+			"style": {}
+		},
+		{
+			"path": "pages/user/pay",
+			"style": {}
+		},
+		{
+			"path": "pages/user/addshop",
+			"app-plus": {
+				"softinputMode": "adjustResize"
+			}
+		},
+		{
+			"path": "pages/user/addshopinfo",
+			"app-plus": {
+				"softinputMode": "adjustResize"
+			}
+		},
+		{
+			"path": "pages/user/myshop",
+			"style": {}
+		},
+		{
+			"path": "pages/user/order",
+			"style": {}
+		},
+		{
+			"path": "pages/user/sellorder",
+			"style": {}
+		},
+		{
+			"path": "pages/user/assets",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/user/userwithdraw",
+			"style": {}
+		},
+		{
+			"path": "pages/user/userexp",
+			"style": {
+				"navigationBarTitleText": "我的等级",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/user/userrecharge",
+			"style": {}
+		},
+		{
+			"path": "pages/user/userwithdrawlist",
+			"style": {}
+		},
+		{
+			"path": "uni_modules/buuug7-img-cropper/pages/cropper",
+			"style": {
+			"navigationBarTitleText": "头像上传"
+			}
+		},
+		// #endif
+		{
+			"path": "pages/user/agreement",
+			"style": {}
+		},
+		// #ifdef APP-PLUS || H5
+		{
+			"path": "pages/user/userbind",
+			"style": {}
+		},
+		// #endif
+		{
+			"path": "pages/contents/comments",
+			"style": {}
+		},
+		{
+			"path": "pages/contents/commentsadd",
+			"style": {}
+		},
+		
+		{
+			"path": "pages/contents/contentlist",
+			"style": {}
+		},
+		{
+			"path": "pages/contents/imagetoday",
+			"style": {
+				"enablePullDownRefresh":true
+			},
+			
+			"app-plus":{
+				"pullToRefresh":{
+					"color":"#3cc9a4",
+					"style":"circle"
+				}
+				
+			}
+		},
+		// #ifdef APP-PLUS || H5
+		{
+			"path": "pages/contents/shop",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/contents/shopinfo",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/contents/shoptext"
+		},
+		{
+			"path": "pages/contents/rewardLog"
+		},
+		// #endif
+		{
+			"path": "pages/contents/info",
+			"style": {
+				"enablePullDownRefresh":true
+			},
+			
+			"app-plus":{
+				"pullToRefresh":{
+					"color":"#3cc9a4",
+					"style":"circle"
+				}
+				
+			}
+		},
+		{
+			"path": "pages/contents/alltag",
+			"style": {}
+		},
+		{
+			"path": "pages/contents/randlist",
+			"style": {}
+		},
+		{
+			"path": "pages/contents/allcategory",
+			"style": {}
+		},
+		{
+			"path": "pages/contents/metas",
+			"style": {}
+		},
+		{
+			"path": "pages/contents/recommend",
+			"style": {}
+		},
+		
+		{
+			"path": "pages/contents/searchuser",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/contents/search",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/contents/userinfo",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		// #ifdef APP-PLUS || H5
+		{
+			"path": "pages/contents/foreverblog",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		// #endif
+		{
+			"path": "pages/contents/blackhouse",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		}
+		// #ifdef APP-PLUS || H5
+		,{
+			"path": "pages/manage/comments",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/user/manage",
+			"style": {}
+		},
+		{
+			"path": "pages/manage/contents",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/manage/recharge",
+			"style": {}
+		},
+		{
+			"path": "pages/manage/shop",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+			
+		
+			
+						//在这里开始
+						},
+						
+					{
+					            "path" : "pages/user/webview",
+					            "style" :                                                                                    
+					            {
+					                "navigationBarTitleText": "H5",
+					                "enablePullDownRefresh": false
+					            }
+					            
+					        
+					        
+				
+		},
+		{
+			"path": "pages/manage/users",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/manage/usersedit"
+		},
+		{
+			"path": "pages/manage/withdraw",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/manage/finance",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/manage/tokenpay"
+		},
+		{
+			"path": "pages/manage/invitation"
+		},
+		{
+			"path": "pages/manage/metas",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/manage/metasedit"
+		},
+		{
+			"path": "pages/manage/clean"
+		},
+		
+		{
+			"path": "pages/manage/metasedit"
+		},
+		{
+			"path": "pages/manage/ads"
+		},
+		{
+			"path": "pages/manage/senduser"
+		},
+		{
+			"path": "pages/manage/banuser"
+		},
+		{
+			"path": "pages/manage/chat",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/manage/addGroup"
+		},
+		{
+			"path": "pages/manage/userClean"
+		},
+		{
+			"path": "pages/manage/endException"
+		},
+		{
+			"path": "pages/manage/giftVIP"
+		},
+		{
+			"path": "pages/manage/section"
+		},
+		{
+			"path": "pages/manage/moderator"
+		},
+		{
+			"path": "pages/manage/categoryEdit"
+		},
+		{
+			"path": "pages/manage/sectionEdit"
+		},
+		{
+			"path": "pages/manage/setModerator"
+		},
+		{
+		    "path" : "pages/manage/postReview",
+		    "style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/manage/space",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/ads/home"
+		},
+		{
+			"path": "pages/ads/adsPost",
+			"app-plus": {
+				"softinputMode": "adjustResize"
+			}
+		},
+		{
+			"path": "pages/ads/myAds"
+		}
+		
+		// #endif
+		,{
+			"path": "pages/chat/chat",
+			"style": {
+				"app-plus":{
+					// 将回弹属性关掉
+					"bounce":"none"
+				}
+			}
+		},
+		{
+			"path": "pages/space/info",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/space/post",
+			"style": {}
+		},
+		{
+			"path": "pages/space/reply",
+			"style": {}
+		}
+		
+		
+		
+    ],
+	"globalStyle": {
+		"mp-alipay": {
+			"transparentTitle": "always",
+			"allowsBounceVertical": "NO"
+		},
+		"navigationBarBackgroundColor": "#0081ff",
+		"navigationBarTitleText": "StarFree开源论坛",
+		"navigationStyle": "custom",
+		"navigationBarTextStyle": "black"
+	},
+	"usingComponts": true,
+		"condition": { 
+		"current": 0,
+		"list": [{
+				"name": "首页", //模式名称
+				"path": "pages/home/home", //启动页面
+				"query": "" //启动参数
+			}
+		]
+	},
+
+	"tabBar": {
+		"color": "#333333",
+		"selectedColor": "#3cc9a4", 
+		"borderStyle": "white",
+		"backgroundColor": "#ffffff",
+		// #ifdef APP-PLUS
+		"height":"0px",
+		// #endif
+		"list": [
+			{
+				"text": "首页",
+				"pagePath": "pages/home/home",
+				"iconPath": "static/tabbar/home.png",
+				"selectedIconPath": "static/tabbar/home_cur.png"
+	
+			},
+			{
+				"text": "广场",
+				"pagePath": "pages/home/square",
+				"iconPath": "static/tabbar/square.png",
+				"selectedIconPath": "static/tabbar/square_cur.png"
+			},
+			{
+				"text": "消息",
+				"pagePath": "pages/home/find",
+				"iconPath": "static/tabbar/find.png",
+				"selectedIconPath": "static/tabbar/find_cur.png"
+			},
+			{
+				"text": "我的",
+				"pagePath": "pages/home/user",
+				"iconPath": "static/tabbar/user.png",
+				"selectedIconPath": "static/tabbar/user_cur.png"
+			}
+		]
+	
+	
+	}
+
+
+}
