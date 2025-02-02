@@ -21,11 +21,11 @@ var currencyName = "积分";//货币名称
 var appEmail = "XXX@qq.com";//站长邮箱
 
 //评论等级头衔
-var rankList = ["潜水","冒泡","活跃","话痨","大佬","巨佬","传说","古神"];
+var rankList = ["新人","潜水","冒泡","活跃","话痨","大佬","巨佬","传说","古神","越神"];
 //经验等级头衔
-var leverList = ["Lv1","Lv2","Lv3","Lv4","Lv5","Lv6","Lv7","Lv8"];
+var leverList = ["Lv0","Lv1","Lv2","Lv3","Lv4","Lv5","Lv6","Lv7","Lv8","Lv9"];
 //头衔对应的背景颜色
-var rankStyle = ["#c9c9c9","#73c9a1","#66c9c6","#6797d3","#616fe6","#8764dd","#5e2dc9","#000000"];
+var rankStyle = ["#dddddd","#c9c9c9","#73c9a1","#66c9c6","#6797d3","#616fe6","#8764dd","#5e2dc9","#4c1c87","#000000"];
 
 //是否禁止网络代理，为1时开启（可以在安卓和苹果APP中防止抓包，但同时也会禁止VPN环境使用APP）
 var banVPN = 0;//由于uniapp官方的问题，只能拦截部分条件
@@ -330,6 +330,12 @@ module.exports = {
 	getForeverblog:function(){
 		return API_URL + 'SFreeContents/foreverblog';
 	},
+	deleteMeta: function() {
+		return API_URL + 'SFreeMetas/deleteMeta';
+	},
+	metaRecommend: function() {
+		return API_URL + 'SFreeMetas/toRecommend';
+	},
 	//帖子是否评论过
 	isCommnet:function(){
 		return API_URL + 'SFreeContents/isCommnet';
@@ -401,11 +407,11 @@ module.exports = {
 		return API_URL + 'SFreeShop/mountShop';
 	},
 	//支付宝当面付
-	scancodePay:function(){
+	scancodePayStar:function(){
 		return API_URL + 'pay/scancodePayStar';
 	},
 	//微信支付（官方）
-	wxPay:function(){
+	WxPayStar:function(){
 		return API_URL + 'pay/WxPayStar';
 	},
 	//卡密充值
@@ -417,7 +423,7 @@ module.exports = {
 		return API_URL + 'pay/EPayStar';
 	},
 	//充值二维码生成
-	qrCode:function(){
+	qrCodeStar:function(){
 		return API_URL + 'pay/qrCodeStar';
 	},
 	payLogList:function(){
@@ -639,21 +645,28 @@ module.exports = {
 			lv = 5;
 		} else if (num >= 2000 && num < 5000) {
 			lv = 6;
-		} else if (num >= 5000) {
+		} else if (num >= 5000 && num < 10000) {
 			lv = 7;
+		} else if (num >= 10000 && num < 20000) {
+			lv = 8;
+		} else if (num >= 20000) {
+			lv = 9;
 		}
 		return lv;
 	},
 	getLeverExp(){
 		return [
-			0,    // 0级所需经验
-			10,   // 1级所需经验
-			50,   // 2级所需经验
-			200,  // 3级所需经验
-			500,  // 4级所需经验
-			1000, // 5级所需经验
-			2000, // 6级所需经验
-			5000  // 7级所需经验
+			0,
+			10,    
+			50,   
+			200,   
+			500,  
+			1000,  
+			2000, 
+			5000,
+			10000,
+			20000,
+			9999999
 		];
 	},
 

@@ -16,7 +16,7 @@
 		<!-- 该项目为开源项目，请尊重作者劳动成果 -->
 		<!-- 允许用于合法的商业运营用途，但请保留版权信息。-->
 		<!-- 数据统计卡片 -->
-		<view class="data-box manage-data" v-if="infoone=='4oCU4oCU4oCUIFN0YXJGcmVlIOKAlOKAlOKAlA=='&&infotwo=='5byA5rqQ5L2c6ICFIOajruS6kQ=='">
+		<view class="data-box manage-data">
 			<view class="user-data grid col-4">
 				<view class="user-data-box">
 					<view class="user-data-value">{{allData.allContents}}</view>
@@ -39,12 +39,12 @@
 		<!-- 该项目为开源项目，请尊重作者劳动成果 -->
 		<!-- 允许用于合法的商业运营用途，但请保留版权信息。-->
 		<!-- 警告提示 -->
-		<view class="warning-box" v-if="infoone=='4oCU4oCU4oCUIFN0YXJGcmVlIOKAlOKAlOKAlA=='&&infotwo=='5byA5rqQ5L2c6ICFIOajruS6kQ=='">
+		<view class="warning-box">
 			<text class="cuIcon-warn margin-right-xs"></text>
 			<text>请注意！请遵守社区规定进行审核管理，违规操作将取消职位！</text>
 		</view>
 		<!-- 内容管理 -->
-		<view class="data-box" v-if="infoone=='4oCU4oCU4oCUIFN0YXJGcmVlIOKAlOKAlOKAlA=='&&infotwo=='5byA5rqQ5L2c6ICFIOajruS6kQ=='">
+		<view class="data-box">
 			<view class="module-title">数据管理</view>
 			<view class="index-sort grid col-5">
 				<view class="index-sort-box">
@@ -102,7 +102,7 @@
 		<!-- 该项目为开源项目，请尊重作者劳动成果 -->
 		<!-- 允许用于合法的商业运营用途，但请保留版权信息。-->
 		<!-- 运营管理 -->
-		<view class="data-box" v-if="group=='administrator'&&infoone=='4oCU4oCU4oCUIFN0YXJGcmVlIOKAlOKAlOKAlA=='&&infotwo=='5byA5rqQ5L2c6ICFIOajruS6kQ=='">
+		<view class="data-box" v-if="group=='administrator'">
 			<view class="module-title">运营管理</view>
 			<view class="index-sort grid col-4">
 				
@@ -118,7 +118,7 @@
 				</view>
 				<view class="index-sort-box">
 					<waves itemClass="butclass">
-						<view class="index-sort-main" @tap="toLink('/pages/ads/home')">
+						<view class="index-sort-main" @tap="toLink('/pages/manage/ads')">
 							<view class="index-sort-i">
 								<text class="cuIcon-read"></text>
 							</view>
@@ -172,7 +172,7 @@
 		<!-- 该项目为开源项目，请尊重作者劳动成果 -->
 		<!-- 允许用于合法的商业运营用途，但请保留版权信息。-->
 		<!-- 管理模块 -->
-		<view class="data-box" v-if="group=='administrator'&&infoone=='4oCU4oCU4oCUIFN0YXJGcmVlIOKAlOKAlOKAlA=='&&infotwo=='5byA5rqQ5L2c6ICFIOajruS6kQ=='">
+		<view class="data-box" v-if="group=='administrator'">
 			<view class="module-title">系统管理</view>
 			<view class="index-sort grid col-4">
 				<view class="index-sort-box">
@@ -222,7 +222,7 @@
 		<!-- 该项目为开源项目，请尊重作者劳动成果 -->
 		<!-- 允许用于合法的商业运营用途，但请保留版权信息。-->
 		<!-- 财务模块 -->
-		<view class="data-box" v-if="group=='administrator'&&infoone=='4oCU4oCU4oCUIFN0YXJGcmVlIOKAlOKAlOKAlA=='&&infotwo=='5byA5rqQ5L2c6ICFIOajruS6kQ=='">
+		<view class="data-box" v-if="group=='administrator'">
 			<view class="module-title">财务管理</view>
 			<view class="index-sort grid col-4">
 				<view class="index-sort-box">
@@ -271,8 +271,9 @@
 		<!-- 允许用于合法的商业运营用途，但请保留版权信息。-->
 		<view class="data-box">
 			<view class="starFree-Info">
-				<view class="starFree-title">{{infooneDecoded}}</view>
-				<view class="starFree-name">{{infotwoDecoded}}</view>
+				<view class="starFree-title">—— StarFree开源论坛 ——</view>
+				<view class="starFree-name">用户交流群 1021506674</view>
+				<view class="starFree-name">开源作者森云</view>
 			</view>
 		</view>
 	</view>
@@ -302,8 +303,8 @@
 				group: "",
 				// 该项目为开源项目，请尊重作者劳动成果 
 				// 允许用于合法的商业运营用途，但请保留版权信息。
-				infoone: "4oCU4oCU4oCUIFN0YXJGcmVlIOKAlOKAlOKAlA==",
-				infotwo: "5byA5rqQ5L2c6ICFIOajruS6kQ==",
+				infoone: "",
+				infotwo: "",
 				myPurviewList: [],
 				isModerator: false,
 				myPurview: 0,

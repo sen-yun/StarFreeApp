@@ -102,7 +102,7 @@
 					style="margin-top:30upx;">
 					<view class="tn-padding-xs text-shojo"
 						style="border-radius: 40upx;color: #262626;font-weight: bold;background: #f1f1f1;">
-						<text class="padding-sm radius" v-if="item.category.length>0">{{item.category[0].name}}圈</text>
+						<text class="padding-sm radius" v-if="item.category.length>0">{{item.category[0].name}}</text>
 
 					</view>
 					<view class="flex align-center" style="color:#666">

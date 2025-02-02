@@ -270,7 +270,7 @@ import { data } from '../../static/app-plus/owo/OwO.js';
 				var that = this;
 				that.orderCur = e.currentTarget.dataset.order;
 				that.page = 1;
-				that.getContentsList(false, "all", 0);
+				that.getMetaContents(false, that.id);
 			},
 			back() {
 				uni.navigateBack({
@@ -501,6 +501,9 @@ import { data } from '../../static/app-plus/owo/OwO.js';
 				var page = that.page;
 				if (isPage) {
 					page++;
+				}else{
+					that.page = 1;
+					page = 1;
 				}
 				that.$Net.request({
 					url: that.$API.getMetaContents(),
@@ -542,10 +545,6 @@ import { data } from '../../static/app-plus/owo/OwO.js';
 								} else {
 									that.contentsList = contentsList;
 								}
-
-
-								localStorage.setItem('contentsList_' + meta, JSON.stringify(that
-								.contentsList));
 							} else {
 								that.moreText = "没有更多了~";
 							}

@@ -279,7 +279,7 @@
 							<view v-if="category[0].slug === 'lv3'">
 							    <view v-if="level >= 3">
 							      <view class="text-shojo round"  style="background-color: #cbffea;">
-							      <text @tap="toCategoryContents(category)" style="font-size: initial;" class="padding-lr-lg padding-tb-xs">{{category[0].name}}圈</text>
+							      <text @tap="toCategoryContents(category)" style="font-size: initial;" class="padding-lr-lg padding-tb-xs">{{category[0].name}}</text>
 							    </view>
 							  </view>
 							  <view v-else>
@@ -287,7 +287,7 @@
 					  </view>
 					  <view v-else>
 					      <view class="text-shojo round"  style="background-color: #cbffea;">
-					      <text @tap="toCategoryContents(category)" style="font-size: initial;" class="padding-lr-lg padding-tb-xs">{{category[0].name}}圈</text>
+					      <text @tap="toCategoryContents(category)" style="font-size: initial;" class="padding-lr-lg padding-tb-xs">{{category[0].name}}</text>
 					  </view>
 					   </view>
 					  
@@ -472,7 +472,7 @@
 				level: 0,
 				 needRefresh: false,
 				commentsNum: 0,
-				category: ['未知'],
+				category: [{'name':'未知','slug':'0'}],
 				created: '',
 				markdownData: {},
 				userInfo: {},
@@ -873,13 +873,18 @@
 				var cid = that.cid;
 				if(localStorage.getItem('postInfo_'+cid)){
 					var postInfo = JSON.parse(localStorage.getItem('postInfo_'+cid));
-					that.category = postInfo.category;
+					
 					that.created = postInfo.created;
 					that.commentsNum = postInfo.commentsNum;
 					that.images = postInfo.images;
 					that.html=that.markHtml(postInfo.text);
 					that.tagList=postInfo.tag;
-					that.slug = postInfo.slug;
+					if(postInfo.category[0]){
+						that.category[0] = postInfo.category[0];
+					}
+					if(postInfo.slug){
+						that.slug = postInfo.slug;
+					}
 					that.authorId = postInfo.authorId
 					
 					that.getIsFollow(postInfo.authorId);
@@ -970,7 +975,7 @@
 						uni.stopPullDownRefresh();
 						if (res.data.title) {
 							that.title = res.data.title;
-							that.category = res.data.category;
+							
 							that.created = res.data.created;
 							that.commentsNum = res.data.commentsNum;
 							that.images = res.data.images;
@@ -978,7 +983,12 @@
 
 							that.html = html;
 							that.tagList = res.data.tag;
-							that.slug = res.data.slug;
+							if(res.data.category[0]){
+								that.category[0] = res.data.category[0];
+							}
+							if(res.data.slug){
+								that.slug = res.data.slug;
+							}
 							that.type = res.data.type;
 							that.likes = res.data.likes;
 							that.authorId = res.data.authorId
@@ -1432,7 +1442,9 @@
 
 				var url = linkStar.replace("{cid}", that.cid);
 				if (linkStar.indexOf("{category}") != -1) {
-					var category = that.category[0].slug;
+					if(that.category){
+						var category = that.category[0].slug;
+					}
 					url = url.replace("{category}", category);
 				}
 				// #ifdef APP-PLUS

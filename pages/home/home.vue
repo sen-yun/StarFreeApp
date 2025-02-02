@@ -74,7 +74,7 @@
 		</view>
 		<view v-if="flag==0" class="">
 
-			<view :style="[{padding:NavBar + 15 + 'px 10px 0px 10px'}]"></view>
+			<view :style="[{padding:NavBar + 25 + 'px 10px 0px 10px'}]"></view>
 			<block>
 				<view class="margin-left-sm margin-right-sm">
 					<swiper v-if="lunbo_of==1" class="screen-swiper swiper-container" style="border-radius: 20upx; "
@@ -206,13 +206,13 @@
 		</view>
 
 		<view v-if="flag==1" class="">
-			<view :style="[{padding:NavBar + 15 + 'px 10px 0px 10px'}]"></view>
+			<view :style="[{padding:NavBar + 25 + 'px 10px 0px 10px'}]"></view>
 			<swiper class="screen-swiper swiper-container" style="border-radius: 20upx;margin: 0px 10px 10px 10px;"
 				:class="dotStyle?'square-dot':'round-dot'" :indicator-dots="true" :circular="true" :autoplay="true"
 				interval="5000" duration="500" v-if="bannerswitch==1">
-				<swiper-item v-for="(item,index) in swiperList2" :key="index" v-if="index<adimage_sl">
+				<swiper-item v-for="(item,index) in swiperList2" :key="index" v-if="index<adimage_sl" @click="swiperclick(index)">
 					<view class="swiper-box" style="border-radius: 20upx;">
-						<image style="width: 100%; height: 100%;" mode="aspectFill" :src="item.url" @click="goAds2(item.zt)"/>
+						<image style="width: 100%; height: 100%;" mode="aspectFill" :src="item.url"/>
 					</view>
 				</swiper-item>
 			</swiper>
@@ -366,7 +366,6 @@
 
 <script>
 	import waves from '@/components/xxley-waves/waves.vue';
-	import metas from '@/pages/contents/metas.vue'
 	import owo from '@/static/app-plus/owo/OwO.js'
 	// #ifdef APP-PLUS
 	import Tabbar from '@/pages/components/tabBar.vue'
@@ -453,7 +452,7 @@
 				recommendList: [],
 				ads: "",
 				noLogin: false,
-
+				latestUserAvatar: [],
 
 				//分类数据
 				isMetasLoading: 0,
@@ -537,6 +536,7 @@
 			}
 
 			// #endif
+			
 			that.getadimg();
 
 
@@ -985,6 +985,11 @@
 					url: '/pages/contents/alltag'
 				});
 			},
+			swiperclick(index) {
+				const data = this.swiperList2[index];
+				this.goAds2(data.zt)
+				
+			},
 			tabSelect(e) {
 				var that = this;
 				that.TabCur = e.currentTarget.dataset.id;
@@ -1364,6 +1369,7 @@
 			hideModal(e) {
 				this.modalName = null
 			},
+			
 			getTopContents() {
 				var that = this;
 				var data = {
@@ -1816,14 +1822,6 @@
 					url: '/pages/home/user'
 				});
 			},
-			toMetas() {
-				var that = this;
-
-				uni.navigateTo({
-					url: '/pages/contents/metas'
-				});
-			},
-
 			goCategory() {
 				var that = this;
 				uni.navigateTo({
@@ -2020,11 +2018,6 @@
 				// #endif
 
 			},
-			toGroup() {
-				uni.navigateTo({
-					url: "/pages/contents/metas"
-				})
-			}
 		},
 
 		// #ifdef APP-PLUS

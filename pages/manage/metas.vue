@@ -55,11 +55,12 @@
 						
 					</view>
 					<view class="manage-btn">
-
-						<text class="cu-btn text-green radius" v-if="item.isrecommend==0"  @tap="addRecommend(item.mid)">推荐</text>
-						<text class="cu-btn text-grey radius" v-else  @tap="rmRecommend(item.mid)">取消推荐</text>
+										
+						<text class="cu-btn text-green radius" v-if="item.isrecommend==0"  @tap="toRecommend(item.mid,1)">推荐</text>
+						<text class="cu-btn text-grey radius" v-else  @tap="toRecommend(item.mid,0)">取消推荐</text>
 					
 						<text class="cu-btn text-blue radius" @tap="toEdit(item.mid)">编辑</text>
+						<text class="cu-btn text-red radius" @tap="toDelete(item.mid)">删除</text>
 					</view>
 				</view>
 				<view class="load-more" @tap="loadMore" v-if="metaList.length>0">
@@ -124,6 +125,61 @@
 			
 		},
 		methods: {
+			toRecommend(id,type){
+				var that = this;
+				var token = "";
+				
+				if(localStorage.getItem('userinfo')){
+					var userInfo = JSON.parse(localStorage.getItem('userinfo'));
+					token=userInfo.token;
+				}
+				var data = {
+					'key':id,
+					'recommend':type,
+					"token":token
+			
+				}
+				uni.showLoading({
+					title: "加载中"
+				});
+				that.$Net.request({
+					
+					url: that.$API.metaRecommend(),
+					data:data,
+					header:{
+						'Content-Type':'application/x-www-form-urlencoded'
+					},
+					method: "get",
+					dataType: 'json',
+					success: function(res) {
+						
+						setTimeout(function () {
+							uni.hideLoading();
+						}, 1000);
+						uni.showToast({
+							title: res.data.msg,
+							icon: 'none'
+						})
+						if(res.data.code==1){
+							that.page=1;
+							that.moreText="加载更多";
+							that.isLoad=0;
+							that.getMetaList(false);
+							
+						}
+					},
+					fail: function(res) {
+						setTimeout(function () {
+							uni.hideLoading();
+						}, 1000);
+						uni.showToast({
+							title: "网络开小差了哦",
+							icon: 'none'
+						})
+						uni.stopPullDownRefresh()
+					}
+				})
+			},
 			loadMore(){
 				var that = this;
 				that.moreText="加载中...";
@@ -143,6 +199,67 @@
 				that.moreText="加载更多";
 				that.isLoad=0;
 				that.getMetaList(false);
+			},
+			toDelete(id){
+				var that = this;
+				var token = "";
+				
+				if(localStorage.getItem('userinfo')){
+					var userInfo = JSON.parse(localStorage.getItem('userinfo'));
+					token=userInfo.token;
+				}
+				var data = {
+					"id":id,
+					"token":token
+				}
+				uni.showModal({
+				    title: '确定要删除该数据吗',
+				    success: function (res) {
+				        if (res.confirm) {
+				            uni.showLoading({
+				            	title: "加载中"
+				            });
+				            
+				            that.$Net.request({
+				            	url: that.$API.deleteMeta(),
+				            	data:data,
+				            	header:{
+				            		'Content-Type':'application/x-www-form-urlencoded'
+				            	},
+				            	method: "get",
+				            	dataType: 'json',
+				            	success: function(res) {
+				            		setTimeout(function () {
+				            			uni.hideLoading();
+				            		}, 1000);
+				            		uni.showToast({
+				            			title: res.data.msg,
+				            			icon: 'none'
+				            		})
+				            		if(res.data.code==1){
+				            			that.page=1;
+				            			that.moreText="加载更多";
+				            			that.isLoad=0;
+				            			that.getMetaList(false);
+				            			
+				            		}
+				            		
+				            	},
+				            	fail: function(res) {
+				            		setTimeout(function () {
+				            			uni.hideLoading();
+				            		}, 1000);
+				            		uni.showToast({
+				            			title: "网络开小差了哦",
+				            			icon: 'none'
+				            		})
+				            	}
+				            })
+				        } else if (res.cancel) {
+				            console.log('用户点击取消');
+				        }
+				    }
+				});
 			},
 			getMetaList(isPage){
 				var that = this;

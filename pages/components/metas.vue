@@ -1,12 +1,11 @@
 <template>
-	<view class="userpost" :class="AppStyle">
-		<view style="background: #fff;" :style="[{padding:StatusBar + 50 + 'px 10px 0px 10px'}]"></view>
+	<view class="userpost">
 		<!-- 用户榜 -->
 		<block v-if="userlist_of==1 && logins==1">
 		<view class="tn-margin-top-sm" @tap="toUserList">
 		  <view class="tn-flex tn-flex-row-between tn-round tn-padding-xs tn-margin" style="background: #71e0b7;color: #fff;">
 		    <view class="justify-content-item tn-text-center tn-flex" style="background-color: transparent;">
-		      <tn-avatar-group :lists="latestUserAvatar" size="sm"></tn-avatar-group>
+		      <tn-avatar-group :lists="avatargroup" size="sm"></tn-avatar-group> 
 		      <text class="tn-padding-xs">共{{usercount}}人</text>
 		    </view>
 		    <view class="justify-content-item tn-text-right tn-padding-top">
@@ -81,6 +80,10 @@
 				type: Array,
 				default:() => []
 			},
+			avatargroup: {
+				type: Array,
+				default:() => []
+			},
 			moreText: {
 				type: String,
 				default: ""
@@ -90,12 +93,9 @@
 				default: 0
 			}
 		},
+		name: "metas",
 		data() {
 			return {
-				StatusBar: this.StatusBar,
-				CustomBar: this.CustomBar,
-				NavBar:this.StatusBar +  this.CustomBar,
-				AppStyle:this.$store.state.AppStyle,
 				// moreText:"加载更多",
 				page: 1,
 				quanzi_style: 1,
@@ -104,7 +104,6 @@
 				mid: 0,
 				usercount: "0",
 				logins: 0,
-				latestUserAvatar: []
 			}
 		},
 		onPullDownRefresh(){
@@ -136,35 +135,9 @@
 			// #ifdef APP-PLUS || MP || H5
 			that.NavBar = this.CustomBar;
 			// #endif
-			that.getLatestUsers();
+			
 		},
 		methods: {
-			getLatestUsers() {
-				const that = this;
-				that.$Net.request({
-					url: that.$API.getUserList(),
-					data: {
-						"searchParams": "",
-						"limit": 4,
-						"page": 1,
-						"token":localStorage.getItem('token'),
-						"searchKey": "",
-						"order": "created"
-					},
-					method: "post",
-					dataType: 'json',
-					success: function(res) {
-						if(res.data.code == 1) {
-							const users = res.data.data;
-							that.latestUserAvatar = users.map(user => ({
-								userJson: {
-									avatar: user.avatar
-								}
-							}));
-						}
-					}
-				})
-			},
 			
 			toUserList() {
 				uni.navigateTo({

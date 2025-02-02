@@ -229,7 +229,8 @@
 			</view>
 		</block>
 <block v-if="squareid==2">
-		<metas :topic="metaCircleList" :moreText="metaCircleMoreTxt" :isLoading="isMetasLoading" @loadMore="metaLoadMore"/>
+	<view :style="[{padding:NavBar + 10 + 'px 10px 0px 0px'}]"></view>
+		<metas :topic="metaCircleList" :avatargroup="latestUserAvatar" :moreText="metaCircleMoreTxt" :isLoading="isMetasLoading" @loadMore="metaLoadMore"/>
 	
 	</block>
 	
@@ -249,10 +250,10 @@
 
 <script>
 	import waves from '@/components/xxley-waves/waves.vue';
-		import metas from '@/pages/contents/metas.vue'
 	// #ifdef APP-PLUS
 	import Tabbar from '@/pages/components/tabBar.vue'
 	// #endif
+	import metas from '@/pages/components/metas.vue'
 	import {
 		localStorage
 	} from '../../js_sdk/mp-storage/mp-storage/index.js'
@@ -279,6 +280,7 @@
 				oldChatList: [],
 				metaList: [],
 				spaceList: [],
+				latestUserAvatar: [],
 				curIMG:"",
 				isGetChat: null,
 				uid: 0,
@@ -347,6 +349,7 @@
 		onShow() {
 			var that = this;
 			that.loadMore();
+			that.getLatestUsers();
 			that.page = 1;
 			// #ifdef APP-PLUS
 			uni.hideTabBar({
@@ -421,6 +424,7 @@
 			var that = this;
 			that.loadMore();
 			that.getMetaList();
+			
 			that.getUserList(false);
 			if (that.token != "") {
 				that.getMyChat(false);
@@ -439,6 +443,7 @@
 			var that = this;
 			that.loadMore();
 			that.getgg();
+			
 		},
 		methods: {
 			
@@ -622,13 +627,6 @@
 								url: '/pages/contents/contentlist?title=' + title + "&type=" + type + "&id=" + id
 							});
 						},
-			toMetas() {
-							var that = this;
-			
-							uni.navigateTo({
-								url: '/pages/contents/metas'
-							});
-						},
 			
 			
 			metaLoadMore() {
@@ -744,6 +742,32 @@
 						// that.getMetaContents(true, that.TabCur);
 						this.getTopPic2();
 				}
+			},
+			
+			getLatestUsers() {
+				const that = this;
+				that.$Net.request({
+					url: that.$API.getUserList(),
+					data: {
+						"searchParams": "",
+						"limit": 4,
+						"page": 1,
+						"searchKey": "",
+						"order": "created"
+					},
+					method: "post",
+					dataType: 'json',
+					success: function(res) {
+						if(res.data.code == 1) {
+							const users = res.data.data;
+							that.latestUserAvatar = users.map(user => ({
+								userJson: {
+									avatar: user.avatar
+								}
+							}));
+						}
+					}
+				})
 			},
 			setFollow(type) {
 				var that = this;
@@ -941,6 +965,7 @@
 			getTopPic2(){
 							var that = this;
 							var data = {
+								"type":'category',
 							}
 							var page = that.metaPage;
 							// if(isPage){
@@ -1460,11 +1485,6 @@
 					url: '/pages/user/register'
 				});
 			},
-			toGroup() {
-							uni.navigateTo({
-								url: "/pages/contents/metas"
-							})
-						}
 			
 			},
 		// #ifdef APP-PLUS
