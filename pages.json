@@ -249,6 +249,10 @@
 			"path": "pages/contents/commentsadd",
 			"style": {}
 		},
+		{
+			"path": "pages/contents/metas",
+			"style": {}
+		},
 		
 		{
 			"path": "pages/contents/contentlist",

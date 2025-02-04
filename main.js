@@ -12,10 +12,6 @@ import API from './utils/api.js'
 import Net from './utils/net.js'
 Vue.prototype.$API = API
 Vue.prototype.$Net = Net
-
-import metas from './pages/components/metas.vue'
-Vue.component('metas',metas)
-
 import articleItem from './pages/components/articleItem.vue'
 Vue.component('articleItem',articleItem)
 

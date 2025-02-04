@@ -366,6 +366,7 @@
 
 <script>
 	import waves from '@/components/xxley-waves/waves.vue';
+	import metas from '@/pages/contents/metas.vue'
 	import owo from '@/static/app-plus/owo/OwO.js'
 	// #ifdef APP-PLUS
 	import Tabbar from '@/pages/components/tabBar.vue'

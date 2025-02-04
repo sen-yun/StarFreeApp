@@ -93,7 +93,6 @@
 				default: 0
 			}
 		},
-		name: "metas",
 		data() {
 			return {
 				// moreText:"加载更多",

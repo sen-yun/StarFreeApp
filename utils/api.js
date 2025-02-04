@@ -419,7 +419,7 @@ module.exports = {
 		return API_URL + 'pay/tokenPay';
 	},
 	//易支付
-	EPay:function(){
+	EPayStar:function(){
 		return API_URL + 'pay/EPayStar';
 	},
 	//充值二维码生成

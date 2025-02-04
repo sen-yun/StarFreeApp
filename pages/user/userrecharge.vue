@@ -45,7 +45,7 @@
 							<text>不低于￥1</text>
 						</view>
 						<view class="card" :class="{'custom-selected': cur === 6, 'custom-default': cur !== 6}"
-							v-if="index===7&&czof3==1">
+							v-if="index===7">
 							<view class="top">
 								<text>兑换码</text>
 							</view>
@@ -880,10 +880,16 @@
 					this.num = this.list[index].money; // Set num to selected predefined value
 				} else if (index == 6) {
 					this.num = ''; // Clear num for custom input
-				} else if (index == 7) {
+				} else if (index == 7&&this.czof3!=1) {
+					this.num = '';
+					uni.showToast({
+						title: "兑换码充值已关闭",
+						icon: 'none'
+					})
+				}  else if (index == 7&&this.czof3==1) {
 					this.num = '';
 					this.kmshow = true;
-				}
+				} 
 			},
 		},
 	};

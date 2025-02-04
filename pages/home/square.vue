@@ -250,10 +250,11 @@
 
 <script>
 	import waves from '@/components/xxley-waves/waves.vue';
+	import metas from '@/pages/contents/metas.vue'
 	// #ifdef APP-PLUS
 	import Tabbar from '@/pages/components/tabBar.vue'
 	// #endif
-	import metas from '@/pages/components/metas.vue'
+	
 	import {
 		localStorage
 	} from '../../js_sdk/mp-storage/mp-storage/index.js'
