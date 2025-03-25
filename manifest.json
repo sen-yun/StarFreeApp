@@ -73,7 +73,7 @@
     "vueVersion" : "2",
     "h5" : {
         "router" : {
-            "base" : "/h5/",
+            "base" : "/",
             "mode" : "hash"
         },
         "title" : "StarFree开源论坛"

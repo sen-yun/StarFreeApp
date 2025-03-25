@@ -189,7 +189,7 @@
 					"cid":that.cid,
 					//"ownerId":that.userinfo.uid,
 					"parent":coid,
-					
+					"showHidden":1 // 标记已回复，可以查看隐藏内容
 				}
 				uni.showLoading({
 					title: "加载中"
@@ -215,13 +215,22 @@
 							title:res.data.msg,
 						    icon:'none'
 						});
-						if(res.data.code==1){
+							if(res.data.code==1){
+							// 保存已回复的帖子ID
+							var repliedComments = JSON.parse(localStorage.getItem('repliedComments') || '[]');
+							if (!repliedComments.includes(that.cid)) {
+								repliedComments.push(that.cid);
+								localStorage.setItem('repliedComments', JSON.stringify(repliedComments));
+							}
+							// 立即更新当前页面的回复状态
+							uni.$emit('updateRepliedState', {cid: that.cid, hasReplied: true});
+							
 							if (localStorage.getItem('userinfo')) {
 							  var userInfo = JSON.parse(localStorage.getItem('userinfo'));
 							  that.username = userInfo.name;
-							
-									
-								}
+							}
+							// 触发info页面刷新
+							uni.$emit('refreshPage');
 							var timer = setTimeout(function() {
 								that.back();
 							}, 1000)

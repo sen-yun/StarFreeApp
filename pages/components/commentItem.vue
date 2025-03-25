@@ -131,10 +131,10 @@
 				
 			},
 			replaceSpecialChar(text) {
-			  text = text.replace(/&quot;/g, '"');
-			  text = text.replace(/&amp;/g, '&');
-			  text = text.replace(/&lt;/g, '<');
-			  text = text.replace(/&gt;/g, '>');
+			  text = text.replace(/"/g, '"');
+			  text = text.replace(/&/g, '&');
+			  text = text.replace(/</g, '<');
+			  text = text.replace(/>/g, '>');
 			  text = text.replace(/&nbsp;/g, ' ');
 			  text = text.replace("||rn||","\n");
 			  return text;
@@ -248,15 +248,48 @@
 			},
 			markHtml(text){
 				var that = this;
-				text = that.replaceAll(text,"<","&lt;");
-				text = that.replaceAll(text,">","&gt;");
-				var owoList=that.owoList;
-				// console.log(JSON.stringify(owoList));
-				for(var i in owoList){
+				text = that.replaceAll(text,"<","<");
+				text = that.replaceAll(text,">",">");
 				
+				// 处理隐藏内容
+				if(that.group !== 'administrator') {
+					// 检查当前用户是否已回复
+					var userinfo = null;
+					try {
+						userinfo = JSON.parse(localStorage.getItem('userinfo'));
+					} catch(e) {
+						userinfo = null;
+					}
+					
+					if(userinfo) {
+						var repliedComments = [];
+						try {
+							repliedComments = JSON.parse(localStorage.getItem('repliedComments') || '[]');
+						} catch(e) {
+							repliedComments = [];
+						}
+						
+						// 如果当前评论有隐藏内容且用户未回复
+						if(text.indexOf('[hide]') !== -1 && !repliedComments.includes(that.item.coid.toString())) {
+							text = text.replace(/\[hide\](.*?)\[\/hide\]/g, '【隐藏内容，回复后可见】');
+							return text;
+						}
+					} else {
+						// 未登录用户
+						if(text.indexOf('[hide]') !== -1) {
+							text = text.replace(/\[hide\](.*?)\[\/hide\]/g, '【隐藏内容，登录并回复后可见】');
+							return text;
+						}
+					}
+				}
+				
+				// 显示所有内容（管理员或已回复用户）
+				text = text.replace(/\[hide\](.*?)\[\/hide\]/g, '$1');
+				
+				var owoList=that.owoList;
+				for(var i in owoList){
 					if(that.replaceSpecialChar(text).indexOf(owoList[i].data) != -1){
 						text = that.replaceAll(that.replaceSpecialChar(text),owoList[i].data,"<img src='/"+owoList[i].icon+"' class='tImg' />")
-						
 					}
 				}
 				return text;

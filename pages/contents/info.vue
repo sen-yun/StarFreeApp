@@ -705,14 +705,19 @@
 			var ctx = this.$refs.article;
 		},
 		
-		created() {
-		  var that = this;
-		  uni.$on('refreshPage', () => {
-		    this.needRefresh = true; // 设置需要更新页面数据的标志
-		    this.percent();
-		  });
-		  this.percent();
-		},
+			created() {
+			  var that = this;
+			  uni.$on('refreshPage', () => {
+			    this.needRefresh = true; // 设置需要更新页面数据的标志
+			    this.percent();
+			  });
+			  uni.$on('updateRepliedState', (data) => {
+			    if(data.cid === this.cid) {
+			      this.getInfo(this.cid); // 刷新内容
+			    }
+			  });
+			  this.percent();
+			},
 		mounted() {
 			var that = this;
 		 this.getset();
@@ -906,13 +911,23 @@
 				text = that.replaceAll(text,"[audio","<audio");
 				text = that.replaceAll(text,"width='100%']","width='100%' audio>");
 				text = that.replaceAll(text,"[/audio]","</audio>");
-				if(that.isCommnet==1){
-					text = that.replaceAll(text,"[hide]","<div style='width:100%;padding:15px 15px;color:#666666;border:solid 1px #3cc9a4;box-sizing: border-box;border-radius: 20px;word-break:break-all;'>");
-					text = that.replaceAll(text,"[/hide]","</div>");
-					text = that.replaceAll(text,"{hide}","<div style='width:100%;padding:15px 15px;color:#666666;border:solid 1px #3cc9a4;box-sizing: border-box;border-radius: 20px;word-break:break-all;'>")
-					text = that.replaceAll(text,"{/hide}","</div>")
-				}else{
-					text = text.replace(/\[hide(([\s\S])*?)\[\/hide\]/g,"<div style='width:100%;padding:15px 15px;background:#cbffea;color:#3cc9a4;border:solid 1px #3cc9a4;box-sizing: border-box;border-radius: 20px;text-align: center;'>该内容评论后显示！</div>");
+				// 检查是否已评论
+				var repliedComments = JSON.parse(localStorage.getItem('repliedComments') || '[]');
+				var hasReplied = repliedComments.includes(that.cid);
+				
+				// 管理员/编辑/作者可以直接查看
+				if (that.group === 'administrator' || that.group === 'editor' || that.authorId === that.loginUid) {
+				text = text.replace(/\[hide(([\s\S]*?))\[\/hide\]/g,"$1");
+				text = text.replace(/{hide(([\s\S]*?)){\/hide}/g,"$1");
+				}
+				// 普通用户评论后显示隐藏内容
+				else if (hasReplied) {
+					text = text.replace(/\[hide](([\s\S]*?))\[\/hide\]/g,"<div style='padding:10px;background:#f5f5f5;border-radius:8px;margin:10px 0'>$1</div>");
+					text = text.replace(/{hide(([\s\S]*?)){\/hide}/g,"<div style='padding:10px;background:#f5f5f5;border-radius:8px;margin:10px 0'>$1</div>");
+				}
+				// 未评论，显示提示
+				else {
+					text = text.replace(/\[hide](([\s\S])*?)\[\/hide\]/g,"<div style='width:100%;padding:15px 15px;background:#cbffea;color:#3cc9a4;border:solid 1px #3cc9a4;box-sizing: border-box;border-radius: 20px;text-align: center;'>该内容评论后显示！</div>");
 					text = text.replace(/{hide(([\s\S])*?){\/hide}/g,"<div style='width:100%;padding:15px 15px;background:#cbffea;color:#3cc9a4;border:solid 1px #3cc9a4;box-sizing: border-box;border-radius: 20px;text-align: center;'>该内容评论后显示！</div>");
 				}
 				if(that.myvip==1){

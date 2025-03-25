@@ -280,7 +280,7 @@
 					page++;
 				}
 				that.$Net.request({
-					url: that.$API.tokenPayList(),
+					url: that.$API.KamiList(),
 					data:{
 						"searchParams":JSON.stringify(that.$API.removeObjectEmptyKey(data)),
 						"limit":20,

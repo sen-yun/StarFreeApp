@@ -41,7 +41,11 @@
 				</view>
 				<view class="user-btn flex flex-direction">
 					<button class="cu-btn bg-blue margin-tb-sm lg" @click.prevent="userRegister">立即注册</button>
-					<button class="cu-btn line-blue margintb-sm lg" v-if="qqlogin==1" @click.prevent="toQQlogin">QQ一键注册</button>
+					<!-- #ifdef APP-PLUS -->
+					<button class="cu-btn line-blue margin-bottom-sm lg" v-if="qqlogin==1" @click.prevent="toQQlogin">QQ一键注册</button>
+					<button class="cu-btn line-blue margin-bottom-sm lg" v-if="wxlogin==1" @click.prevent="toWexinlogin">微信一键注册</button>
+					<button class="cu-btn line-blue margin-bottom-sm lg" v-if="wblogin==1" @click.prevent="toWeibologin">微博一键注册</button>
+					<!-- #endif -->
 					<text class="text-blue text-center margin-top" @tap="toAgreement">注册即同意 《用户协议》</text>
 				</view>
 			</form>
@@ -97,7 +101,9 @@
 		appname: this.$API.GetAppName(),
         repassword: "",
 		modelVisible: false,
+		wxlogin: 0,
 		qqlogin: 0,
+		wblogin: 0,
         times: 60,
 		registertext:"",
         show: true,
@@ -170,6 +176,8 @@
 			  			dataType:"json",
 			  			success(res) {
 							that.qqlogin = res.data.qqlogin;
+							that.wxlogin = res.data.wxlogin;
+							that.wblogin = res.data.wblogin;
 			  			
 			  			},
 			  			fail(error) {
@@ -529,6 +537,200 @@
 									}
 								})
 								
+							}
+						});
+					},
+					fail: err => {
+						uni.showToast({
+							title: '请求出错啦！',
+							icon: 'none',
+							duration: 3000
+						});
+						setTimeout(function () {
+							uni.hideLoading();
+						}, 1000);
+					}
+				});
+			},
+			toWexinlogin(){
+				var that = this;
+				//微信登陆
+				//后端直接根据unionId来判断用户的唯一性。
+				
+				uni.login({
+					provider: 'weixin',
+					success: res => {
+						
+						var js_code = res.code;
+						uni.getUserInfo({
+							provider: 'weixin',
+							success: function(infoRes) {
+								
+								let formdata = {
+									nickName: infoRes.userInfo.nickName,
+									//gender: infoRes.userInfo.gender,
+									appLoginType:"weixin",
+				                    headImgUrl: infoRes.userInfo.avatarUrl,
+									// openId: infoRes.userInfo.openId,
+									// accessToken: infoRes.userInfo.unionId,
+								};
+								// #ifdef APP-PLUS
+								formdata.openId=infoRes.userInfo.openId;
+								formdata.accessToken=infoRes.userInfo.unionId,
+								formdata.type = "app";
+								formdata.js_code = js_code;
+								// #endif
+								// #ifdef MP-WEIXIN
+								formdata.type = "applets";
+								formdata.js_code = js_code;
+								// #endif
+								uni.showLoading({
+									title: "加载中"
+								});
+								that.$Net.request({
+									
+									url: that.$API.userApi(),
+									data:{"params":JSON.stringify(that.$API.removeObjectEmptyKey(formdata))},
+									header:{
+										'Content-Type':'application/x-www-form-urlencoded'
+									},
+									method: "get",
+									dataType: 'json',
+									success: function(res) {
+										setTimeout(function () {
+											uni.hideLoading();
+										}, 1000);
+										uni.showToast({
+											title: res.data.msg,
+											icon: 'none'
+										})
+										if(res.data.code==1){
+											uni.setStorage({
+												key: 'username',
+												data: that.userName,
+												success: function () {
+													console.log('缓存成功');
+													console.log(that.userName);
+												},
+												fail:function(){
+													console.log('缓存失败');
+												}
+											});
+											//保存用户信息
+											localStorage.setItem('userinfo',JSON.stringify(res.data.data));
+											localStorage.setItem('token',res.data.data.token);
+											var timer = setTimeout(function() {
+												uni.switchTab({
+													url: '/pages/home/home'
+												})
+												clearTimeout('timer')
+											}, 1000)
+										}
+									},
+									fail: function(res) {
+										setTimeout(function () {
+											uni.hideLoading();
+										}, 1000);
+										uni.showToast({
+											title: "网络不太好哦",
+											icon: 'none'
+										})
+										uni.stopPullDownRefresh()
+									}
+								})
+								
+							}
+						});
+					},
+					fail: err => {
+						console.log(err)
+						uni.showToast({
+							title: '请求出错啦！',
+							icon: 'none',
+							duration: 3000
+						});
+						setTimeout(function () {
+							uni.hideLoading();
+						}, 1000);
+					}
+				});
+			},
+			toWeibologin(){
+				var that = this;
+				//微博登陆
+				//后端直接根据access_token来判断用户的唯一性。
+				
+				uni.login({
+					provider: 'sinaweibo',
+					success: res => {
+						var access_token = '';
+						access_token = res.authResult.access_token;
+						uni.getUserInfo({
+							provider: 'sinaweibo',
+							success: function(infoRes) {
+								var formdata = {
+									nickName: infoRes.userInfo.nickname,
+									//gender: infoRes.userInfo.gender == 'm' ? 1 : 2,
+									headImgUrl: infoRes.userInfo.avatar_large,
+									openId: infoRes.userInfo.id,
+									accessToken: access_token,
+									appLoginType: 'SINAWEIBO'
+			
+								};
+								uni.showLoading({
+									title: "加载中"
+								});
+								that.$Net.request({
+									
+									url: that.$API.userApi(),
+									data:{"params":JSON.stringify(that.$API.removeObjectEmptyKey(formdata))},
+									header:{
+										'Content-Type':'application/x-www-form-urlencoded'
+									},
+									method: "get",
+									dataType: 'json',
+									success: function(res) {
+										setTimeout(function () {
+											uni.hideLoading();
+										}, 1000);
+										uni.showToast({
+											title: res.data.msg,
+											icon: 'none'
+										})
+										if(res.data.code==1){
+											uni.setStorage({
+												key: 'username',
+												data: that.userName,
+												success: function () {
+													console.log('缓存成功');
+													console.log(that.userName);
+												},
+												fail:function(){
+													console.log('缓存失败');
+												}
+											});
+											//保存用户信息
+											localStorage.setItem('userinfo',JSON.stringify(res.data.data));
+											localStorage.setItem('token',res.data.data.token);
+											var timer = setTimeout(function() {
+												uni.switchTab({
+													url: '/pages/home/home'
+												})
+												clearTimeout('timer')
+											}, 1000)
+										}
+									},
+									fail: function(res) {
+										setTimeout(function () {
+											uni.hideLoading();
+										}, 1000);
+										uni.showToast({
+											title: "网络不太好哦",
+											icon: 'none'
+										})
+										uni.stopPullDownRefresh()
+									}
+								})
 							}
 						});
 					},

@@ -265,6 +265,10 @@
 				payshow: false,
 				topayshow: false,
 				cur: 0,
+				kmlist:[{
+					number: '卡密',
+					money: '卡密',
+				}],
 				list: [{
 						number: '1',
 						money: '1',
@@ -292,10 +296,6 @@
 					{
 						number: '自定义',
 						money: '自定义',
-					},
-					{
-						number: '卡密',
-						money: '卡密',
 					}
 				],
 			};
@@ -318,13 +318,15 @@
 			}
 			that.userStatus();
 			that.getVipInfo();
-			that.getset();
+			
+			
 		},
 		onLoad() {
 			var that = this;
 			// #ifdef APP-PLUS || MP
 			that.NavBar = this.CustomBar;
 			// #endif
+			that.getset();
 		},
 		methods: {
 			pay() {
@@ -616,6 +618,9 @@
 						that.czof1 = res.data.czof1;
 						that.czof2 = res.data.czof2;
 						that.czof3 = res.data.czof3;
+						if(res.data.czof3 == 1){
+							that.list.push(that.kmlist)
+						}
 						that.czof4 = res.data.czof4;
 						that.cztext1 = res.data.cztext1;
 						that.cztext2 = res.data.cztext2;
@@ -626,6 +631,7 @@
 						console.log(error);
 					}
 				})
+				
 			},
 			userStatus() {
 				var that = this;

@@ -9,8 +9,8 @@ StarFree 作者：森云
 */
 
 //APP配置
-var API_URL = "#";//StarFreeApi站点，最后要带“/” 比如：https://baidu.com/
-var STAR_URL = "#";//Star后台站点，最后要带“/” 比如：https://baidu.com/
+var API_URL = '#'; //StarFreeApi站点域名，最后要带“/” 比如：https://baidu.com/
+var STAR_URL = '#';//Star后台站点，最后要带“/” 比如：https://baidu.com/
 var WEB_URL = "#";
 //H5地址，有目录也要填写目录，最后要带“/” 比如：https://baidu.com/ 或https://baidu.com/h5/ 用于生成分享链接
 
@@ -37,6 +37,7 @@ var banVPN = 0;//由于uniapp官方的问题，只能拦截部分条件
 var fields = "abcimg";
 var key = "";
 var isComment = 1;
+var version = "1.1正式版";
 var linkStar = WEB_URL + "#/pages/contents/info?cid={cid}&title=starfree"
 var GroupUrl = STAR_URL + '/Api/api.php?act=qqqun';
 var GithubUrl = STAR_URL + '/Api/api.php?act=kefu';
@@ -46,6 +47,9 @@ import { localStorage } from '@/js_sdk/mp-storage/mp-storage/index.js'
 module.exports = {
 	getKey(){
 		return key;
+	},
+	getAppVersion(){
+		return version;
 	},
 	getBanVPN(){
 		return banVPN;
@@ -432,6 +436,9 @@ module.exports = {
 	//卡密充值相关
 	tokenPayList:function(){
 		return API_URL + 'pay/tokenPayStar';
+	},
+	KamiList:function(){
+		return API_URL + 'pay/tokenPayList';
 	},
 	tokenPayExcel:function(){
 		return API_URL + 'pay/tokenPayExcel';

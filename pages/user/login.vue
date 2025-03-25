@@ -40,10 +40,10 @@
 			<view class="api-login-box" @tap="toQQlogin" v-if="qqlogin==1">
 				<image src="../../static/icon_qq.png"></image>
 			</view>
-			<view class="api-login-box" @tap="toWXlogin" v-if="wxlogin==1">
+			<view class="api-login-box" @tap="toWexinlogin" v-if="wxlogin==1">
 				<image src="../../static/icon_weixin.png"></image>
 			</view>
-			<view class="api-login-box" @tap="toWBlogin" v-if="wblogin==1">
+			<view class="api-login-box" @tap="toWeibologin" v-if="wblogin==1">
 				<image src="../../static/icon_weibo.png"></image>
 			</view>
 		</view>

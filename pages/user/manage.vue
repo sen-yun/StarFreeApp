@@ -272,8 +272,9 @@
 		<view class="data-box">
 			<view class="starFree-Info">
 				<view class="starFree-title">—— StarFree开源论坛 ——</view>
-				<view class="starFree-name">用户交流群 1021506674</view>
-				<view class="starFree-name">开源作者森云</view>
+				<view class="starFree-name">当前APP版本：{{version}}</view>
+				<view class="starFree-name">用户交流群：1021506674</view>
+				<view class="starFree-name">开源作者：森云</view>
 			</view>
 		</view>
 	</view>
@@ -294,6 +295,7 @@
 				uid: 0,
 				userInfo: null,
 				token: "",
+				version:this.$API.getAppVersion(),
 				allData: {
 				      allContents: 0,
 				      allComments: 0, 
