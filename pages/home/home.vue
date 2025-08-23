@@ -89,7 +89,7 @@
 						</swiper-item>
 					</swiper>
 					<view v-if="top_of==1" class="index-sort grid col-4" style="border-radius: 20upx;">
-						<view class="index-sort-box">
+						<view class="index-sort-box" v-if="!sy_appbox">
 							<waves itemClass="butclass">
 								<view class="index-sort-main" @tap="goPage('/pages/contents/blackhouse')">
 									<view class="index-sort-i"
@@ -98,6 +98,19 @@
 									</view>
 									<view class="index-sort-text">
 										小黑屋
+									</view>
+								</view>
+							</waves>
+						</view>
+						<view class="index-sort-box" v-if="sy_appbox">
+							<waves itemClass="butclass">
+								<view class="index-sort-main" @tap="goPage('/pages/plugins/sy_appbox/home',true)">
+									<view class="index-sort-i"
+										style="border-radius: 20upx;background: linear-gradient(to bottom right, #aaff7f, #00ae4b);box-shadow: #55ff0059 0px 3px 5px 0px;">
+										<text class="cuIcon-apps" style="color:  #ffffff;"></text>
+									</view>
+									<view class="index-sort-text">
+										应用
 									</view>
 								</view>
 							</waves>
@@ -459,7 +472,8 @@
 				isMetasLoading: 0,
 				metaPage: 1,
 				metaCircleList: [],
-				metaCircleMoreTxt: "加载更多"
+				metaCircleMoreTxt: "加载更多",
+				sy_appbox: false,
 
 			}
 		},
@@ -566,6 +580,13 @@
 			// #ifdef APP-PLUS
 			that.appStartImg();
 			//#endif
+			//插件检测
+			var cachedPlugins = localStorage.getItem('getPlugins');
+			if (cachedPlugins) {
+				const pluginList = JSON.parse(cachedPlugins);
+				// 检查插件是否存在于插件列表中
+				that.sy_appbox = pluginList.includes('sy_appbox'); 
+			}
 
 		},
 		onReachBottom() {
@@ -1626,8 +1647,8 @@
 				});
 
 			},
-			goPage(url) {
-				if (!localStorage.getItem('userinfo')) {
+			goPage(url,isApp) {
+				if (!localStorage.getItem('userinfo')&&!isApp) {
 					uni.showToast({
 						title: '请先登录！',
 						icon: 'none'

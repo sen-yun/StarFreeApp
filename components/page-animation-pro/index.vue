@@ -33,7 +33,13 @@
 				this.isBack = false;
 				this.pageAnimationName = '';
 				setTimeout(() => {
-					const classList = document.querySelector('uni-page').classList
+					const uniPageElement = document.querySelector('uni-page');
+					if (!uniPageElement) {
+						console.warn('uni-page element not found, skipping animation');
+						callback && callback();
+						return;
+					}
+					const classList = uniPageElement.classList
 					classList.add($this.pageOut, $this.pageBefore)
 					classList.remove('page-show')
 					setTimeout(() => {
@@ -43,9 +49,14 @@
 				}, 20)
 			},
 			show() {
-				let $this = this
-				let pagePath = window.location.hash;
-				const classList = document.querySelector('uni-page').classList
+			let $this = this
+			let pagePath = window.location.hash;
+			const uniPageElement = document.querySelector('uni-page');
+			if (!uniPageElement) {
+				console.warn('uni-page element not found, skipping animation');
+				return;
+			}
+			const classList = uniPageElement.classList
 				pageIndexSetting.forEach(page => {
 					if ('#/' + page.path == pagePath) {
 						$this.pageAnimation = true;

@@ -189,6 +189,7 @@
 				
 				group:"",
 				loginUid:0,
+				myvip:0,
 				
 				authorId:0,
 				isFollow:0,
@@ -217,6 +218,10 @@
 				that.group = userInfo.group;
 				that.loginUid = userInfo.uid;
 				
+				// 检查会员状态
+				that.checkVipStatus();
+			} else {
+				that.myvip = 0; // 未登录用户设置为非会员
 			}
 			// #ifdef MP-BAIDU
 			//预留百度小程序TDK
@@ -370,7 +375,9 @@
 				
 				//结束
 				
-				if(that.isCommnet==1){
+				// 处理回复可见内容
+				// 检查用户是否已回复（管理员可以直接看到内容）
+				if(that.group === 'administrator' || that.isCommnet == 1){
 					text = that.replaceAll(text,"[hide]","<div style='width:100%;padding:15px 15px;background:#dff0d8;color:#3c763d;border:solid 1px #d6e9c6;box-sizing: border-box;border-radius: 5px;word-break:break-all;'>");
 					text = that.replaceAll(text,"[/hide]","</div>");
 					text = that.replaceAll(text,"{hide}","<div style='width:100%;padding:15px 15px;background:#dff0d8;color:#3c763d;border:solid 1px #d6e9c6;box-sizing: border-box;border-radius: 5px;word-break:break-all;'>")
@@ -378,6 +385,18 @@
 				}else{
 					text = text.replace(/\[hide(([\s\S])*?)\[\/hide\]/g,"<div style='width:100%;padding:15px 15px;background:#f2dede;color:#a94442;border:solid 1px #ebccd1;box-sizing: border-box;border-radius: 5px;'>此内容需要评论后方可阅读！</div>");
 					text = text.replace(/{hide(([\s\S])*?){\/hide}/g,"<div style='width:100%;padding:15px 15px;background:#f2dede;color:#a94442;border:solid 1px #ebccd1;box-sizing: border-box;border-radius: 5px;'>此内容需要评论后方可阅读！</div>");
+				}
+				
+				// 处理会员可见内容
+				// 检查用户会员状态（管理员可以直接看到内容）
+				if(that.group === 'administrator' || that.myvip == 1){
+					text = that.replaceAll(text,"[vip]","<div style='width:100%;padding:15px 15px;color:#666666;border:solid 1px #fb7299;box-sizing: border-box;border-radius: 5px;word-break:break-all;'>");
+					text = that.replaceAll(text,"[/vip]","</div>");
+					text = that.replaceAll(text,"{vip}","<div style='width:100%;padding:15px 15px;color:#666666;border:solid 1px #fb7299;box-sizing: border-box;border-radius: 5px;word-break:break-all;'>")
+					text = that.replaceAll(text,"{/vip}","</div>")
+				}else{
+					text = text.replace(/\[vip(([\s\S])*?)\[\/vip\]/g,"<div style='width:100%;padding:15px 15px;background:#ffecee;color:#fb7299;border:solid 1px #fb7299;box-sizing: border-box;border-radius: 5px;text-align: center;'>该内容仅会员可查看！</div>");
+					text = text.replace(/{vip(([\s\S])*?){\/vip}/g,"<div style='width:100%;padding:15px 15px;background:#ffecee;color:#fb7299;border:solid 1px #fb7299;box-sizing: border-box;border-radius: 5px;text-align: center;'>该内容仅会员可查看！</div>");
 				}
 				// #ifdef APP-PLUS || H5
 				var owoList=that.owoList;
@@ -505,6 +524,48 @@
 					}
 				})
 			},
+			checkVipStatus() {
+			   var that = this;
+			  if (localStorage.getItem('userinfo')) {
+			    var userInfo = JSON.parse(localStorage.getItem('userinfo'));
+			    that.username = userInfo.name;
+			       uni.request({
+			         url: that.$API.SMhy(),
+			         method: 'GET',
+			         data: {
+			           username: that.username
+			         },
+			         dataType: "json",
+			         success(res) {
+						if (res.data.vip === 0) {
+						      that.myvip = 0; 
+						    } else if (res.data.vip === 1) {
+						      that.myvip = 1; 
+						    } else {
+						      const expirationTime = new Date(res.data.vip * 1000);
+						      const currentTime = new Date(); 
+						      if (expirationTime < currentTime) {
+						        that.myvip = 0; 
+						      } else {
+						        that.myvip = 1; 
+						      }
+						    }
+					console.log('视频页会员状态更新:', that.myvip);
+					// 会员状态更新后重新获取并渲染内容
+					if (that.cid) {
+						that.getInfo(that.cid);
+					}
+			         },
+			         fail(error) {
+			           console.log(error);
+					   that.myvip = 0; // 失败时设置为非会员
+			         }
+			       })
+				   
+			    } else {
+					that.myvip = 0; // 未登录用户设置为非会员
+				}
+			 },
 			getInfo(cid){
 				var that = this;
 				var data = {

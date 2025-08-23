@@ -705,19 +705,16 @@
 			var ctx = this.$refs.article;
 		},
 		
-			created() {
-			  var that = this;
-			  uni.$on('refreshPage', () => {
-			    this.needRefresh = true; // 设置需要更新页面数据的标志
-			    this.percent();
-			  });
-			  uni.$on('updateRepliedState', (data) => {
-			    if(data.cid === this.cid) {
-			      this.getInfo(this.cid); // 刷新内容
-			    }
-			  });
-			  this.percent();
-			},
+		created() {
+		  var that = this;
+		  uni.$on('refreshPage', () => {
+		    this.needRefresh = true; // 设置需要更新页面数据的标志
+		    this.percent();
+			// 重新检查回复状态
+			this.getIsCommnet();
+		  });
+		  this.percent();
+		},
 		mounted() {
 			var that = this;
 		 this.getset();
@@ -911,26 +908,22 @@
 				text = that.replaceAll(text,"[audio","<audio");
 				text = that.replaceAll(text,"width='100%']","width='100%' audio>");
 				text = that.replaceAll(text,"[/audio]","</audio>");
-				// 检查是否已评论
-				var repliedComments = JSON.parse(localStorage.getItem('repliedComments') || '[]');
-				var hasReplied = repliedComments.includes(that.cid);
 				
-				// 管理员/编辑/作者可以直接查看
-				if (that.group === 'administrator' || that.group === 'editor' || that.authorId === that.loginUid) {
-				text = text.replace(/\[hide(([\s\S]*?))\[\/hide\]/g,"$1");
-				text = text.replace(/{hide(([\s\S]*?)){\/hide}/g,"$1");
-				}
-				// 普通用户评论后显示隐藏内容
-				else if (hasReplied) {
-					text = text.replace(/\[hide](([\s\S]*?))\[\/hide\]/g,"<div style='padding:10px;background:#f5f5f5;border-radius:8px;margin:10px 0'>$1</div>");
-					text = text.replace(/{hide(([\s\S]*?)){\/hide}/g,"<div style='padding:10px;background:#f5f5f5;border-radius:8px;margin:10px 0'>$1</div>");
-				}
-				// 未评论，显示提示
-				else {
-					text = text.replace(/\[hide](([\s\S])*?)\[\/hide\]/g,"<div style='width:100%;padding:15px 15px;background:#cbffea;color:#3cc9a4;border:solid 1px #3cc9a4;box-sizing: border-box;border-radius: 20px;text-align: center;'>该内容评论后显示！</div>");
+				// 处理回复可见内容
+				// 检查用户是否已回复（管理员可以直接看到内容）
+				if(that.group === 'administrator' || that.isCommnet == 1){
+					text = that.replaceAll(text,"[hide]","<div style='width:100%;padding:15px 15px;color:#666666;border:solid 1px #3cc9a4;box-sizing: border-box;border-radius: 20px;word-break:break-all;'>");
+					text = that.replaceAll(text,"[/hide]","</div>");
+					text = that.replaceAll(text,"{hide}","<div style='width:100%;padding:15px 15px;color:#666666;border:solid 1px #3cc9a4;box-sizing: border-box;border-radius: 20px;word-break:break-all;'>")
+					text = that.replaceAll(text,"{/hide}","</div>")
+				}else{
+					text = text.replace(/\[hide(([\s\S])*?)\[\/hide\]/g,"<div style='width:100%;padding:15px 15px;background:#cbffea;color:#3cc9a4;border:solid 1px #3cc9a4;box-sizing: border-box;border-radius: 20px;text-align: center;'>该内容评论后显示！</div>");
 					text = text.replace(/{hide(([\s\S])*?){\/hide}/g,"<div style='width:100%;padding:15px 15px;background:#cbffea;color:#3cc9a4;border:solid 1px #3cc9a4;box-sizing: border-box;border-radius: 20px;text-align: center;'>该内容评论后显示！</div>");
 				}
-				if(that.myvip==1){
+				
+				// 处理会员可见内容
+				// 检查用户会员状态（管理员可以直接看到内容）
+				if(that.group === 'administrator' || that.myvip == 1){
 					text = that.replaceAll(text,"[vip]","<div style='width:100%;padding:15px 15px;color:#666666;border:solid 1px #fb7299;box-sizing: border-box;border-radius: 20px;word-break:break-all;'>");
 					text = that.replaceAll(text,"[/vip]","</div>");
 					text = that.replaceAll(text,"{vip}","<div style='width:100%;padding:15px 15px;color:#666666;border:solid 1px #fb7299;box-sizing: border-box;border-radius: 20px;word-break:break-all;'>")
@@ -1239,7 +1232,7 @@
 			         url: that.$API.SMhy(),
 			         method: 'GET',
 			         data: {
-			           username: that.username
+						token: that.token
 			         },
 			         dataType: "json",
 			         success(res) {
@@ -1256,14 +1249,21 @@
 						        that.myvip = 1; 
 						      }
 						    }
-					console.log(res);
+					console.log('会员状态更新:', that.myvip);
+					// 会员状态更新后重新获取并渲染内容
+					if (that.cid) {
+						that.getInfo(that.cid);
+					}
 			         },
 			         fail(error) {
 			           console.log(error);
+					   that.myvip = 0; // 失败时设置为非会员
 			         }
 			       })
 				   
-			    }
+			    } else {
+					that.myvip = 0; // 未登录用户设置为非会员
+				}
 				
 			        
 			 },
@@ -1543,6 +1543,7 @@
 
 				}
 				if (token == "") {
+					that.isCommnet = 0;
 					return false;
 				}
 				var data = {
@@ -1560,10 +1561,15 @@
 					success: function(res) {
 						if (res.data.code == 1) {
 							that.isCommnet = 1;
-							that.getInfo(that.cid);
+						} else {
+							that.isCommnet = 0;
 						}
+						// 无论是否已回复都需要重新渲染内容
+						that.getInfo(that.cid);
 					},
 					fail: function(res) {
+						that.isCommnet = 0;
+						that.getInfo(that.cid);
 						uni.showToast({
 							title: "网络不太好哦~",
 							icon: 'none'

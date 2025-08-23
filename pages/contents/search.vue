@@ -33,9 +33,15 @@
 				</view>
 			</view>
 			<!--  #endif -->
-			<view class="search-type grid col-3">
+			<view class="search-type grid" :class="sy_appbox?'col-4':'col-3'">
+				<view class="search-type-box" v-if="sy_appbox&&appModOrder==1" @tap="toType(5)" :class="type==5?'active':''">
+					<text>应用</text>
+				</view>
 				<view class="search-type-box" @tap="toType(0)" :class="type==0?'active':''">
 					<text>帖子</text>
+				</view>
+				<view class="search-type-box" v-if="sy_appbox&&appModOrder==0" @tap="toType(5)" :class="type==5?'active':''">
+					<text>应用</text>
 				</view>
 				<!--  #ifdef H5 || APP-PLUS -->
 			
@@ -132,6 +138,46 @@
 			
 			</view>
 			<!--用户结束-->
+			<!-- 添加应用列表部分 -->
+			<view :class="'bg-white'" :style="{'background-color':'#ffffff'}" v-if="type==5">
+				<view class="no-data" v-if="appList.length==0">
+					<text class="cuIcon-text"></text>
+					暂时没有应用
+				</view>
+				<block v-else>
+					<view class="app-box" :style="{'padding': '20rpx','border-bottom-color':'#f5f5f5'}" v-for="(item, index) in appList" :key="index">
+						<view class="app-box-body" @tap="toAppInfo(item.id)">
+							<view class="app-box-logo">
+								<u-image :src="item.logo" width="110rpx" height="110rpx" mode="aspectFill" 
+									:lazy-load="true" :fade="true" duration="450" border-radius="28rpx">
+									<u-loading slot="loading"></u-loading>
+								</u-image>
+							</view>
+							<view class="app-box-content">
+								<view class="app-box-title text-cut" :style="{'color':'#333'}">{{item.name}}</view>
+								<view class="app-box-info" :style="{'color':'#666'}">
+									<text :style="{color: item.tagInfo.color}" 
+										:class="item.score>=3?'tn-icon-star-fill':'tn-icon-star'"></text>
+									<text :style="{color: item.tagInfo.color}">{{item.score}}</text>
+									<text>{{item.size}}</text>
+									<text>v{{item.version}}</text>
+									<text :class="item.system=='ios'?'tn-icon-iphone':''"></text>
+								</view>
+								<view class="app-box-tags">
+									<text class="app-tag" 
+										:style="{backgroundColor: item.tagInfo.color}">{{item.tagInfo.text}}</text>
+									<text v-for="(category, idx) in item.sortJson" :key="idx" 
+										class="app-category-tag" :style="{'background-color':'#f5f5f5','color':'#666666'}">{{category.name}}</text>
+								</view>
+							</view>
+						</view>
+						<view class="app-box-down" @tap="toAppInfo(item.id)">下载</view>
+					</view>
+				</block>
+				<view class="load-more" @tap="loadMore" v-if="appList.length>0">
+					<text>{{moreText}}</text>
+				</view>
+			</view>
 		</view>
 		
 		<!--加载遮罩-->
@@ -174,6 +220,27 @@
 				isLoading:0,
 				
 				changeLoading:1,
+				sy_appbox:false,
+				appModOrder:0,
+				appList: [], // 应用列表数据
+				tagMap: {
+					1: {
+						text: '搬运',
+						color: '#7c72ff'
+					},
+					2: {
+						text: '原创',
+						color: '#19be6b'
+					},
+					3: {
+						text: '金标',
+						color: '#ff6600'
+					},
+					4: {
+						text: '官方',
+						color: '#2979ff'
+					}
+				},
 			}
 		},
 		onPullDownRefresh(){
@@ -187,6 +254,8 @@
 				that.getCommentsList(false)
 			}else if(that.type==2){
 				that.getUserList(false)
+			}else if(that.type==5&&that.sy_appbox){
+				that.getAppList(false)
 			}else{
 				that.getSpaceList(false)
 			}
@@ -221,6 +290,16 @@
 			// #ifdef APP-PLUS || MP
 			that.NavBar = this.CustomBar;
 			// #endif
+			//插件检测
+			var cachedPlugins = localStorage.getItem('getPlugins');
+			if (cachedPlugins) {
+				const pluginList = JSON.parse(cachedPlugins);
+				// 检查插件是否存在于插件列表中
+				that.sy_appbox = pluginList.includes('sy_appbox'); 
+			}
+			if(that.sy_appbox){
+				that.getAppBoxInfo();
+			}
 			
 		},
 		methods: {
@@ -236,6 +315,8 @@
 					that.getCommentsList(false)
 				}else if(i==2){
 					that.getUserList(false)
+				}else if(i==5&&that.sy_appbox){
+					that.getAppList(false)
 				}else{
 					that.getSpaceList(false)
 				}
@@ -255,6 +336,8 @@
 					that.getCommentsList(true)
 				}else if(that.type==2){
 					that.getUserList(true)
+				}else if(that.type==5&&that.sy_appbox){
+					that.getAppList(true)
 				}else{
 					that.getSpaceList(true)
 				}
@@ -268,6 +351,8 @@
 					that.getCommentsList()
 				}else if(that.type==2){
 					that.getUserList()
+				}else if(that.type==5&&that.sy_appbox){
+					that.getAppList(false)
 				}else{
 					that.getSpaceList()
 				}
@@ -284,6 +369,8 @@
 					that.getCommentsList()
 				}else if(that.type==2){
 					that.getUserList()
+				}else if(that.type==5&&that.sy_appbox){
+					that.getAppList(false)
 				}else{
 					that.getSpaceList()
 				}
@@ -361,6 +448,137 @@
 						}, 300)
 					}
 				})
+			},
+			getAppList(isPage) {
+				const that = this;
+				if(that.submitStatus1){
+					return false;
+				}
+				that.submitStatus1 = true;
+				let page = that.page;
+				if(isPage){
+					page++;
+				}
+				
+				uni.request({
+					url: that.$API.PluginLoad('sy_appbox'),
+					data: {
+						"action": "getAppList",
+						"getapp_page": page,
+						"getapp_limit": 10,
+						"getapp_order": "created",
+						"getapp_searchKey": that.searchText
+					},
+					method: 'GET',
+					dataType: "json",
+					success(res) {
+						that.submitStatus1 = false;
+						that.changeLoading = 1;
+						that.isLoad = 0;
+						if(res.data.code == 200){
+							const data = res.data.data || [];
+							const list = data.map(item => {
+								return {
+									...item,
+									tagInfo: that.tagMap[item.type] || {
+										text: '未知',
+										color: '#999'
+									},
+									size: that.formatSize(item.size)
+								};
+							});
+							
+							if(list && list.length > 0){
+								if(isPage){
+									that.page++;
+									that.appList = that.appList.concat(list);
+								}else{
+									that.appList = list;
+								}
+							}else{
+								if(isPage){
+									that.moreText = "没有更多应用了";
+								}else{
+									that.appList = [];
+								}
+							}
+						}
+						var timer = setTimeout(function() {
+							that.isLoading = 1;
+							clearTimeout('timer')
+						}, 300)
+					},
+					fail(error) {
+						that.submitStatus1 = false;
+						that.changeLoading = 1;
+						that.moreText = "加载更多";
+						that.isLoad = 0;
+						var timer = setTimeout(function() {
+							that.isLoading = 1;
+							clearTimeout('timer')
+						}, 300)
+					}
+				});
+			},
+			toAppInfo(id) {
+				uni.navigateTo({
+					url: '/pages/plugins/sy_appbox/info?id=' + id
+				});
+			},
+			getAppBoxInfo(){
+				var that = this;
+				uni.request({
+					url: that.$API.PluginLoad('sy_appbox'),
+					data: {
+						"action": "getConfig"
+					},
+					method: 'GET',
+					dataType: "json",
+					success(res) {
+						if(res.data.code == 200) {
+							that.appModOrder = res.data.data.appModOrder;
+							if (that.sy_appbox && that.appModOrder == 1) {
+								that.type = 5;
+							} else {
+								that.type = 0;
+							}
+							if(that.type==0){
+								that.getContentsList();
+							}else if(that.type==1){
+								that.getCommentsList()
+							}else if(that.type==2){
+								that.getUserList()
+							}else if(that.type==5&&that.sy_appbox){
+								that.getAppList(false)
+							}else{
+								that.getSpaceList()
+							}
+						} else {
+							console.log(res.data.msg)
+						}
+					},
+					fail(error) {
+						that.apploading = false;
+						console.log(error);
+						uni.showToast({
+							title: "网络开小差了",
+							icon: 'none'
+						});
+					}
+				});
+			},
+			formatSize(size) {
+				if (!size) {
+					return '未知大小';
+				}
+			
+				if (size >= 1024 * 1024) {
+					return (size / (1024 * 1024)).toFixed(1) + 'Gb';
+				} else if (size >= 1024) {
+					return (size / 1024).toFixed(1) + 'Mb';
+				} else {
+					return size + 'Kb';
+				}
 			},
 			getCommentsList(isPage){
 				var that = this;
@@ -675,5 +893,79 @@
 </script>
 
 <style>
+	.app-box {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 20rpx;
+	}
 
+	.app-box-body {
+		flex: 1;
+		display: flex;
+		margin-right: 20rpx;
+		min-width: 0;
+		align-items: center;
+	}
+
+	.app-box-logo {
+		width: 110rpx;
+		height: 110rpx;
+		flex-shrink: 0;
+	}
+
+	.app-box-content {
+		flex: 1;
+		margin-left: 20rpx;
+		min-width: 0;
+	}
+
+	.app-box-title {
+		font-size: 30rpx;
+		font-weight: bold;
+		margin-bottom: 8rpx;
+		width: 400rpx;
+	}
+
+	.app-box-info {
+		font-size: 26rpx;
+		color: #666;
+		margin-bottom: 8rpx;
+	}
+
+	.app-box-info text {
+		margin-right: 10rpx;
+	}
+
+	.app-box-down {
+		background-color: #3cc9a4;
+		color: #fff;
+		padding: 10rpx 30rpx;
+		border-radius: 100rpx;
+		white-space: nowrap;
+	}
+
+	.app-box-tags {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		font-size: 28rpx;
+	}
+
+	.app-tag {
+		padding: 4rpx 12rpx;
+		border-radius: 8rpx;
+		color: #ffffff;
+		margin-right: 12rpx;
+		font-size: 24rpx;
+	}
+
+	.app-category-tag {
+		padding: 4rpx 12rpx;
+		border-radius: 8rpx;
+		background-color: #f5f5f5;
+		color: #666666;
+		margin-right: 12rpx;
+		font-size: 24rpx;
+	}
 </style>

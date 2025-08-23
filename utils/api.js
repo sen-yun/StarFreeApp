@@ -37,13 +37,37 @@ var banVPN = 0;//由于uniapp官方的问题，只能拦截部分条件
 var fields = "abcimg";
 var key = "";
 var isComment = 1;
-var version = "1.1正式版";
+var version = "1.2正式版";
 var linkStar = WEB_URL + "#/pages/contents/info?cid={cid}&title=starfree"
+var appStar = WEB_URL + "#/pages/plugins/sy_appbox/info?id={id}&title=starfree";
 var GroupUrl = STAR_URL + '/Api/api.php?act=qqqun';
 var GithubUrl = STAR_URL + '/Api/api.php?act=kefu';
 import { localStorage } from '@/js_sdk/mp-storage/mp-storage/index.js'
-
-
+var cachedPlugins = localStorage.getItem('getPlugins');
+if (cachedPlugins) {
+    var pluginList = JSON.parse(cachedPlugins);
+}
+uni.request({
+	url: STAR_URL + 'Api/api.php?act=getPlugins',
+	header: {
+	  'Content-Type': 'application/x-www-form-urlencoded'
+	},
+	method: 'GET',
+	dataType: 'json',
+	success: (res) => {
+		if (res.data.code === 200) {
+			pluginList = res.data.data;
+			localStorage.setItem('getPlugins', JSON.stringify(pluginList));
+			console.log(pluginList);
+		}
+	},
+	fail: (res) => {
+		uni.showToast({
+			title: '获取应用配置的信息失败.',
+			icon: 'none'
+		});
+	}
+});
 module.exports = {
 	getKey(){
 		return key;
@@ -595,6 +619,17 @@ module.exports = {
 	},
 	GetMp3Url:function(){
 		return STAR_URL + 'mp3.php';
+	},
+	SFgetAppInfoUrl: function() {
+		return STAR_URL + 'Plugins/sy_appbox/Pages/getAppInfo.php';
+	},
+	GetappStar: function() {
+		return appStar;
+	},
+	//插件
+	PluginLoad(pluginName) {
+		const timestamp = Date.now();
+		return `${STAR_URL}Plugins/${pluginName}/index.php?timestamp=${timestamp}&plugin=${pluginName}&`;
 	},
 	
 	IsNull(obj) {

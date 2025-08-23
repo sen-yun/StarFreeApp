@@ -1,60 +1,59 @@
 {
 	"easycom": {
-	    "^tn-(.*)": "@/uni_modules/tuniao-ui/components/tn-$1/tn-$1.vue",
+		"^tn-(.*)": "@/uni_modules/tuniao-ui/components/tn-$1/tn-$1.vue",
 		"^u-(.*)": "@/uni_modules/uview-ui/components/u-$1/u-$1.vue"
-	  },
-	"pages": [
-		{
+	},
+	"pages": [{
 			"path": "pages/home/home",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			},
-			
-			"app-plus":{
-				"pullToRefresh":{
-					"color":"#3cc9a4",
-					"style":"circle"
+
+			"app-plus": {
+				"pullToRefresh": {
+					"color": "#3cc9a4",
+					"style": "circle"
 				}
-				
+
 			}
 		},
 		{
 			"path": "pages/home/find",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			},
-			
-			"app-plus":{
-				"pullToRefresh":{
-					"color":"#3cc9a4",
-					"style":"circle"
+
+			"app-plus": {
+				"pullToRefresh": {
+					"color": "#3cc9a4",
+					"style": "circle"
 				}
-				
+
 			}
 		},
 		{
 			"path": "pages/home/square",
-			
-			"app-plus":{
-				"pullToRefresh":{
-					"color":"#3cc9a4",
-					"style":"circle"
+
+			"app-plus": {
+				"pullToRefresh": {
+					"color": "#3cc9a4",
+					"style": "circle"
 				}
-				
+
 			}
 		},
 		{
 			"path": "pages/home/tool",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			},
-			
-			"app-plus":{
-				"pullToRefresh":{
-					"color":"#3cc9a4",
-					"style":"circle"
+
+			"app-plus": {
+				"pullToRefresh": {
+					"color": "#3cc9a4",
+					"style": "circle"
 				}
-				
+
 			}
 		},
 		{
@@ -64,19 +63,19 @@
 		{
 			"path": "pages/user/userlist",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/user/fanList",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/user/followList",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -107,15 +106,15 @@
 		{
 			"path": "pages/user/userpost",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			},
-			
-			"app-plus":{
-				"pullToRefresh":{
-					"color":"#3cc9a4",
-					"style":"circle"
+
+			"app-plus": {
+				"pullToRefresh": {
+					"color": "#3cc9a4",
+					"style": "circle"
 				}
-				
+
 			}
 		},
 		{
@@ -202,7 +201,7 @@
 		{
 			"path": "pages/user/assets",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -227,7 +226,7 @@
 		{
 			"path": "uni_modules/buuug7-img-cropper/pages/cropper",
 			"style": {
-			"navigationBarTitleText": "头像上传"
+				"navigationBarTitleText": "头像上传"
 			}
 		},
 		// #endif
@@ -253,7 +252,7 @@
 			"path": "pages/contents/metas",
 			"style": {}
 		},
-		
+
 		{
 			"path": "pages/contents/contentlist",
 			"style": {}
@@ -261,28 +260,28 @@
 		{
 			"path": "pages/contents/imagetoday",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			},
-			
-			"app-plus":{
-				"pullToRefresh":{
-					"color":"#3cc9a4",
-					"style":"circle"
+
+			"app-plus": {
+				"pullToRefresh": {
+					"color": "#3cc9a4",
+					"style": "circle"
 				}
-				
+
 			}
 		},
 		// #ifdef APP-PLUS || H5
 		{
 			"path": "pages/contents/shop",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/contents/shopinfo",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -295,15 +294,15 @@
 		{
 			"path": "pages/contents/info",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			},
-			
-			"app-plus":{
-				"pullToRefresh":{
-					"color":"#3cc9a4",
-					"style":"circle"
+
+			"app-plus": {
+				"pullToRefresh": {
+					"color": "#3cc9a4",
+					"style": "circle"
 				}
-				
+
 			}
 		},
 		{
@@ -322,44 +321,44 @@
 			"path": "pages/contents/recommend",
 			"style": {}
 		},
-		
+
 		{
 			"path": "pages/contents/searchuser",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/contents/search",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/contents/userinfo",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		},
 		// #ifdef APP-PLUS || H5
 		{
 			"path": "pages/contents/foreverblog",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		},
 		// #endif
 		{
 			"path": "pages/contents/blackhouse",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		}
 		// #ifdef APP-PLUS || H5
-		,{
+		, {
 			"path": "pages/manage/comments",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -369,7 +368,7 @@
 		{
 			"path": "pages/manage/contents",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -379,30 +378,22 @@
 		{
 			"path": "pages/manage/shop",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
-			
-		
-			
-						//在这里开始
-						},
-						
-					{
-					            "path" : "pages/user/webview",
-					            "style" :                                                                                    
-					            {
-					                "navigationBarTitleText": "H5",
-					                "enablePullDownRefresh": false
-					            }
-					            
-					        
-					        
-				
+		},
+
+		{
+			"path": "pages/user/webview",
+			"style": {
+				"navigationBarTitleText": "H5",
+				"enablePullDownRefresh": false
+			}
+
 		},
 		{
 			"path": "pages/manage/users",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -411,13 +402,13 @@
 		{
 			"path": "pages/manage/withdraw",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/manage/finance",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -429,7 +420,7 @@
 		{
 			"path": "pages/manage/metas",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -438,7 +429,7 @@
 		{
 			"path": "pages/manage/clean"
 		},
-		
+
 		{
 			"path": "pages/manage/metasedit"
 		},
@@ -454,7 +445,7 @@
 		{
 			"path": "pages/manage/chat",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -485,15 +476,15 @@
 			"path": "pages/manage/setModerator"
 		},
 		{
-		    "path" : "pages/manage/postReview",
-		    "style": {
-				"enablePullDownRefresh":true
+			"path": "pages/manage/postReview",
+			"style": {
+				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/manage/space",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -508,21 +499,21 @@
 		{
 			"path": "pages/ads/myAds"
 		}
-		
+
 		// #endif
-		,{
+		, {
 			"path": "pages/chat/chat",
 			"style": {
-				"app-plus":{
+				"app-plus": {
 					// 将回弹属性关掉
-					"bounce":"none"
+					"bounce": "none"
 				}
 			}
 		},
 		{
 			"path": "pages/space/info",
 			"style": {
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -532,11 +523,46 @@
 		{
 			"path": "pages/space/reply",
 			"style": {}
+		},
+		//示例插件
+		{
+			"path": "pages/plugins/sy_example/home",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
+		//软件库插件
+		{
+			"path": "pages/plugins/sy_appbox/home",
+			"style": {
+				
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/plugins/sy_appbox/info",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/plugins/sy_appbox/post",
+			"style": {}
+		},
+		{
+			"path": "pages/plugins/sy_appbox/replyinfo",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/plugins/sy_appbox/tipList",
+			"style": {}
 		}
-		
-		
-		
-    ],
+
+
+
+	],
 	"globalStyle": {
 		"mp-alipay": {
 			"transparentTitle": "always",
@@ -548,31 +574,29 @@
 		"navigationBarTextStyle": "black"
 	},
 	"usingComponts": true,
-		"condition": { 
+	"condition": {
 		"current": 0,
 		"list": [{
-				"name": "首页", //模式名称
-				"path": "pages/home/home", //启动页面
-				"query": "" //启动参数
-			}
-		]
+			"name": "首页", //模式名称
+			"path": "pages/home/home", //启动页面
+			"query": "" //启动参数
+		}]
 	},
 
 	"tabBar": {
 		"color": "#333333",
-		"selectedColor": "#3cc9a4", 
+		"selectedColor": "#3cc9a4",
 		"borderStyle": "white",
 		"backgroundColor": "#ffffff",
 		// #ifdef APP-PLUS
-		"height":"0px",
+		"height": "0px",
 		// #endif
-		"list": [
-			{
+		"list": [{
 				"text": "首页",
 				"pagePath": "pages/home/home",
 				"iconPath": "static/tabbar/home.png",
 				"selectedIconPath": "static/tabbar/home_cur.png"
-	
+
 			},
 			{
 				"text": "广场",
@@ -593,8 +617,8 @@
 				"selectedIconPath": "static/tabbar/user_cur.png"
 			}
 		]
-	
-	
+
+
 	}
 
 

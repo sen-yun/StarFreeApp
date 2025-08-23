@@ -122,14 +122,22 @@
 			
 			<!-- </view> -->
 			
-			<view class="search-type grid col-3">
-				<view class="search-type-box" style="width: 10%;" @tap="toType(0)" :class="type==0?'active':''">
+			<view class="search-type grid" :class="sy_appbox?'col-4':'col-3'">
+				<view class="search-type-box" v-if="sy_appbox&&appModOrder==1" @tap="toType(4)"
+					:class="type==4?'active':''">
+					<text>应用</text>
+				</view>
+				<view class="search-type-box" @tap="toType(0)" :class="type==0?'active':''">
 					<text>帖子</text>
 				</view>
-				<view class="search-type-box" style="width: 10%;" @tap="toType(2)" :class="type==2?'active':''">
+				<view class="search-type-box" v-if="sy_appbox&&appModOrder==0" @tap="toType(4)"
+					:class="type==4?'active':''">
+					<text>应用</text>
+				</view>
+				<view class="search-type-box" @tap="toType(2)" :class="type==2?'active':''">
 					<text>动态</text>
 				</view>
-				<view class="search-type-box" style="width: 10%;" @tap="toType(1)" :class="type==1?'active':''">
+				<view class="search-type-box" @tap="toType(1)" :class="type==1?'active':''">
 					<text>评论</text>
 				</view>
 				
@@ -187,26 +195,60 @@
 				</view>
 			</view>
 			<!--评论结束-->
+			<view class="margin-top-sm padding-sm" :class="'bg-white'" :style="{'background-color':'#ffffff'}" v-if="type==4">
+				<!-- 添加加载动画 -->
+				<view class="loading-container" v-if="apploading">
+					<u-loading mode="circle" size="36"></u-loading>
+				</view>
+				
+				<!-- 应用列表 -->
+				<block v-if="applist.length>0">
+					<view class="app-box" v-for="(item, index) in applist" :key="index">
+						<view class="app-box-body" @tap="toAppInfo(item.id)">
+							<view class="app-box-logo">
+								<u-image :src="item.logo" width="110rpx" height="110rpx" mode="aspectFill" 
+									:lazy-load="true" :fade="true" duration="450" border-radius="28rpx">
+									<u-loading slot="loading"></u-loading>
+								</u-image>
+							</view>
+							<view class="app-box-content">
+								<view class="app-box-title text-cut">{{item.name}}</view>
+								<view class="app-box-info">
+									<text :style="{color: item.tagInfo.color}" 
+										:class="item.score>=3?'tn-icon-star-fill':'tn-icon-star'"></text>
+									<text :style="{color: item.tagInfo.color}">{{item.score}}</text>
+									<text>{{item.size}}</text>
+									<text :class="item.system=='ios'?'tn-icon-iphone':''"></text>
+									</view>
+									<view class="app-box-tags">
+										<text class="app-tag"
+											:style="{backgroundColor: item.tagInfo.color}">{{item.tagInfo.text}}</text>
+										<text v-for="(category, idx) in item.sortJson" :key="idx"
+											class="app-category-tag">{{category.name}}</text>
+									</view>
+							</view>
+						</view>
+						<view class="app-box-down" @tap="toAppInfo(item.id)">下载</view>
+					</view>
+				</block>
+				
+				<!-- 空数据提示 -->
+				<block v-else>
+					<view class="margin-top-sm">
+						<u-empty text="暂无应用" mode="data" icon-size="100" font-size="24"></u-empty>
+					</view>
+				</block>
+				
+				<!-- 加载更多 -->
+				<view class="load-more" @tap="loadMore" v-if="applist.length>0">
+					<text>{{moreText}}</text>
+				</view>
+			</view>
 			
 			<!--占位区域-->
 			<view style="width: 100%;height: 100upx; background-color: #f6f6f6;"></view>
 		</view>
-		<!--底部操作
-		<view class="userInfo-bottom-btn" v-if="vid!=uid">
-			<view class="userInfo-bottom-main grid col-2">
-				<view class="userInfo-bottom-box" @tap="getPrivateChat()">
-					<view class="userInfo-tochat">
-						<text class="cuIcon-mark"></text>私聊
-					</view>
-					
-				</view>
-				<view class="userInfo-bottom-box">
-					<button class="cu-btn bg-gray" @tap="follow(0)" v-if="isFollow==1"><text class="cuIcon-check"></text>已关注</button>
-					<button class="cu-btn bg-shojo" @tap="follow(1)" v-else><text class="cuIcon-add"></text>关注</button>
-					
-				</view>
-			</view>
-		</view>-->
+		
 		<!--加载遮罩-->
 		<view class="loading" v-if="isLoading==0">
 			<view class="loading-main">
@@ -269,8 +311,13 @@
 				myname:"",
 				scrollTop:0,
 				isFollow:0,
-				
 				vid:"",
+				sy_appbox: false, 
+				appModOrder: 2, 
+				applist:[],
+				apppage: 1,
+				apploading: false, 
+
 				
 				
 			} 
@@ -330,6 +377,8 @@
 				that.getContentsList(false);
 			}else if(i==1){
 				that.getCommentsList(false)
+			}else if(i == 4) {
+				that.getAppList(false);
 			}else{
 				that.getSpaceList(false)
 			}
@@ -356,7 +405,24 @@
 			}
 			that.owoList = owoList;
 			// #endif
-			that.getContentsList(false);
+			if(that.type == 0) {
+				that.getContentsList(false);
+			} else if(that.type == 1) {
+				that.getCommentsList(false);
+			} else if(that.type == 4) {
+				that.getAppList(false);
+			} else {
+				that.getSpaceList(false);
+			}
+			var cachedPlugins = localStorage.getItem('getPlugins');
+			if (cachedPlugins) {
+				var pluginList = JSON.parse(cachedPlugins);
+				// 检查插件是否存在于插件列表中
+				that.sy_appbox = pluginList.includes('sy_appbox');
+			}
+			if(that.sy_appbox){
+				that.getAppBoxInfo();
+			}
 			
 		},
 		methods: {
@@ -409,12 +475,14 @@
 				that.page=1;
 				that.moreText="加载更多";
 				that.isLoad=0;
-				if(i==0){
+				if(i == 0) {
 					that.getContentsList(false);
-				}else if(i==1){
-					that.getCommentsList(false)
-				}else{
-					that.getSpaceList(false)
+				} else if(i == 1) {
+					that.getCommentsList(false);
+				} else if(i == 4) {
+					that.getAppList(false);
+				} else {
+					that.getSpaceList(false);
 				}
 			},
 			goFanList(uid){
@@ -501,11 +569,13 @@
 			},
 			reload(){
 				var that = this;
-				if(that.type==0){
+				if (that.type == 0) {
 					that.getContentsList(false);
-				}else if(that.type==1){
+				} else if (that.type == 1) {
 					that.getCommentsList(false)
-				}else{
+				}else if (that.type == 4) {
+					that.getAppList(false)
+				} else {
 					that.getSpaceList(false)
 				}
 				
@@ -700,6 +770,147 @@
 				uni.navigateTo({
 					url: '/pages/user/setup'
 				})
+			},
+			getAppBoxInfo(){
+				var that = this;
+				uni.request({
+					url: that.$API.PluginLoad('sy_appbox'),
+					data: {
+						"action": "getConfig"
+					},
+					method: 'GET',
+					dataType: "json",
+					success(res) {
+						if(res.data.code == 200) {
+							that.appModOrder = res.data.data.appModOrder;
+							if (that.sy_appbox && that.appModOrder == 1) {
+								that.type = 4;
+							} else {
+								that.type = 0;
+							}
+							if(that.type == 0) {
+								that.getContentsList(false);
+							} else if(that.type == 1) {
+								that.getCommentsList(false);
+							} else if(that.type == 4) {
+								that.getAppList(false);
+							} else {
+								that.getSpaceList(false);
+							}
+						} else {
+							console.log(res.data.msg)
+						}
+					},
+					fail(error) {
+						that.apploading = false;
+						console.log(error);
+						uni.showToast({
+							title: "网络开小差了",
+							icon: 'none'
+						});
+					}
+				});
+			},
+			getAppList(isPage) {
+				const that = this;
+				if(that.apploading) return;
+				
+				if(!isPage) {
+					that.apppage = 1;
+					that.dataLoad = true;
+					that.apploading = true;
+				}
+				
+				let page = that.apppage;
+				if(isPage) {
+					page++;
+				}
+
+				const data = {
+					authorId: that.uid
+				};
+
+				uni.request({
+					url: that.$API.PluginLoad('sy_appbox'),
+					data: {
+						"action": "getAppList",
+						"getapp_page": page,
+						"getapp_limit": 10,
+						"getapp_order": "created",
+						"getapp_if": JSON.stringify(that.$API.removeObjectEmptyKey(data))
+					},
+					method: 'GET',
+					dataType: "json",
+					success(res) {
+						if(res.data.code == 200) {
+							const list = res.data.data || []; // 添加空数组作为默认值
+							if(list.length > 0) {
+								const mappedList = list.map(item => {
+									return {
+										...item,
+										tagInfo: {
+											text: item.type == 1 ? '搬运' : 
+												item.type == 2 ? '原创' : 
+												item.type == 3 ? '金标' : 
+												item.type == 4 ? '官方' : '未知',
+											color: item.type == 1 ? '#7c72ff' : 
+												item.type == 2 ? '#19be6b' : 
+												item.type == 3 ? '#ff6600' : 
+												item.type == 4 ? '#2979ff' : '#999'
+										},
+										size: that.formatSize(item.size)
+									};
+								});
+								
+								that.isLoad = 0;
+								if(isPage) {
+									if(list.length < 1) {
+										that.moreText = "没有更多数据了";
+									}
+									that.applist = [...that.applist, ...mappedList];
+									that.apppage = page;
+								} else {
+									that.applist = mappedList;
+									that.apppage = 1;
+								}
+							} else {
+								if(!isPage) {
+									that.applist = [];
+								}
+								that.moreText = "没有更多数据了";
+							}
+						} else {
+							uni.showToast({
+								title: res.data.msg,
+								icon: 'none'
+							});
+						}
+						that.apploading = false;
+					},
+					fail(error) {
+						that.apploading = false;
+						console.log(error);
+						uni.showToast({
+							title: "网络开小差了",
+							icon: 'none'
+						});
+					}
+				});
+			},
+			formatSize(size) {
+				if(!size) return '未知大小';
+				if(size >= 1024 * 1024) {
+					return (size / (1024 * 1024)).toFixed(1) + 'Gb';
+				} else if(size >= 1024) {
+					return (size / 1024).toFixed(1) + 'Mb';  
+				} else {
+					return size + 'Kb';
+				}
+			},
+			toAppInfo(id) {
+				uni.navigateTo({
+					url: '/pages/plugins/sy_appbox/info?id=' + id
+				});
 			},
 			getCommentsList(isPage){
 				var that = this;
@@ -1111,4 +1322,79 @@
 .cu-bar2{
 	margin-top: 20upx;
 }
+.app-box {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 20rpx;
+	}
+
+	.app-box-body {
+		flex: 1;
+		display: flex;
+		margin-right: 20rpx;
+		min-width: 0;
+		align-items: center;
+	}
+
+	.app-box-logo {
+		width: 110rpx;
+		height: 110rpx;
+		flex-shrink: 0;
+	}
+
+	.app-box-content {
+		flex: 1;
+		margin-left: 20rpx;
+		min-width: 0;
+	}
+
+	.app-box-title {
+		font-size: 30rpx;
+		font-weight: bold;
+		margin-bottom: 8rpx;
+		width: 400rpx;
+	}
+
+	.app-box-info {
+		font-size: 26rpx;
+		color: #666;
+		margin-bottom: 8rpx;
+	}
+
+	.app-box-info text {
+		margin-right: 10rpx;
+	}
+
+	.app-box-down {
+		background-color: #3cc9a4;
+		color: #fff;
+		padding: 10rpx 30rpx;
+		border-radius: 100rpx;
+		white-space: nowrap;
+	}
+
+	.app-box-tags {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		font-size: 28rpx;
+	}
+
+	.app-tag {
+		padding: 4rpx 12rpx;
+		border-radius: 8rpx;
+		color: #ffffff;
+		margin-right: 12rpx;
+		font-size: 24rpx;
+	}
+
+	.app-category-tag {
+		padding: 4rpx 12rpx;
+		border-radius: 8rpx;
+		background-color: #f5f5f5;
+		color: #666666;
+		margin-right: 12rpx;
+		font-size: 24rpx;
+	}
 </style>

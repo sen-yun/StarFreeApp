@@ -166,6 +166,14 @@
 						</view>
 							<image class="right"  style="float: right;" src="../../static/image/travel/personal/Clipped.png">
 					</view>
+					<!-- 插件检测：如果插件被打开，则显示插件页面入口 -->
+					<view v-if="sy_example" @tap="toLink('/pages/plugins/sy_example/home')">
+						<text class="tn-icon-set" style="margin-left:8px"></text>
+						<view class="tn-flex-1">
+							<text>示例插件入口</text>
+						</view>
+							<image class="right"  style="float: right;" src="../../static/image/travel/personal/Clipped.png">
+					</view>
 					
 				</view>
 			</view>
@@ -228,8 +236,9 @@ import { data } from '../../static/app-plus/owo/OwO.js';
 				assetsname:"",
 				appname:this.$API.GetappJC(),
 				isLoginShow:false,
-				
+				sy_example:false,//插件变量定义
 				noticeSum:0,
+
 				
 			}
 		},
@@ -280,6 +289,13 @@ import { data } from '../../static/app-plus/owo/OwO.js';
 			// #ifdef APP-PLUS || MP
 			that.NavBar = this.CustomBar;
 			// #endif
+			//插件检测
+			var cachedPlugins = localStorage.getItem('getPlugins');
+			if (cachedPlugins) {
+				const pluginList = JSON.parse(cachedPlugins);
+				// 检查插件是否存在于插件列表中
+				that.sy_example = pluginList.includes('sy_example'); // 检测'sy_example'插件是否安装并开启
+			}
 			
 		},
 		mounted() {

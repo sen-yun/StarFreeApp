@@ -1,31 +1,31 @@
 <template>
 	<view class="grade">
-		<view class="bar">
-			<u-navbar bgColor="rgba(255, 255, 255, 0.0)">
-				<view slot="left" class="left" @click="goBack">
-					<image src="../../static/image/travel/ranking/headLeft.png">
+		<view class="custom-navbar" :style="'padding-top:' + StatusBar + 'px;'">
+			<view class="navbar-content" :style="'height:' + CustomBar + 'px;'">
+				<view class="navbar-left" @click="goBack">
+					<image src="../../static/image/travel/ranking/headLeft.png"></image>
 				</view>
-				<view slot="center" class="center">
+				<view class="navbar-center">
 					<text>我的等级</text>
 				</view>
-				<view slot="right" class="right" @tap="showModal" data-target="Modal">
+				<view class="navbar-right" @tap="showModal" data-target="Modal">
 					<text>等级说明</text>
 				</view>
-			</u-navbar>
+			</view>
 		</view>
-		<view class="top">
-			<image class="line" src="../../static/image/travel/ranking/arc.png">
+		<view class="top" >
+			<image class="line" src="../../static/image/travel/ranking/arc.png"></image>
 			<view class="num">
 				<view>
-					<image src="../../static/image/travel/ranking/grade.png">
+					<image src="../../static/image/travel/ranking/grade.png"></image>
 					<p style="font-size: 10px;">Lv.{{levelfirst}}</p>
 				</view>
 				<view>
-					<image src="../../static/image/travel/ranking/grade.png">
+					<image src="../../static/image/travel/ranking/grade.png"></image>
 					<text>Lv.{{level}}</text>
 				</view>
 				<view>
-					<image src="../../static/image/travel/ranking/grade.png">
+					<image src="../../static/image/travel/ranking/grade.png"></image>
 					<p style="font-size: 10px;">Lv.{{levellast}}</p>
 				</view>
 			</view>
@@ -409,30 +409,64 @@ export default {
 		& text{
 			font-family: PingFangSC-Semibold, PingFang SC;
 		}
-		.bar{
-			.left image{
-				width: 48rpx;
-				height: 48rpx;
-			}
-			.center text{
-				font-size: 32rpx;
-				font-weight: 600;
-				color: #FFFFFF;
-				line-height: 44rpx;
-			}
-			.right{
-				width: 148rpx;
-				height: 44rpx;
-				background: #3cc9a4;
-				border-radius: 22rpx 0 0 22rpx;
-				border: 2rpx solid #FFFFFF;
-				text-align: center;
-				margin-right: -34rpx;
-				>text{
-					font-size: 24rpx;
-					font-family: PingFangSC-Regular, PingFang SC;
-					color: #FFFFFF;
-					line-height: 44rpx;
+		.custom-navbar {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			background: transparent;
+			z-index: 999;
+			
+			.navbar-content {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 0 32rpx;
+				
+				.navbar-left {
+					width: 88rpx;
+					height: 100%;
+					display: flex;
+					align-items: center;
+					justify-content: flex-start;
+					
+					image {
+						width: 48rpx;
+						height: 48rpx;
+					}
+				}
+				
+				.navbar-center {
+					flex: 1;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					
+					text {
+						font-size: 32rpx;
+						color: #FFFFFF;
+						line-height: 44rpx;
+					}
+				}
+				
+				.navbar-right {
+					width: 148rpx;
+					height: 44rpx;
+					background: #3cc9a4;
+					border-radius: 22rpx 0 0 22rpx;
+					border: 2rpx solid #FFFFFF;
+					text-align: center;
+					margin-right: -34rpx;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					
+					text {
+						font-size: 24rpx;
+						font-family: PingFangSC-Regular, PingFang SC;
+						color: #FFFFFF;
+						line-height: 44rpx;
+					}
 				}
 			}
 		}
@@ -440,6 +474,7 @@ export default {
 			width: 750rpx;
 			height: 450rpx;
 			padding: 0 50rpx;
+			margin-top: 0; /* 从页面顶部开始 */
 			border-radius: 0 0 50% 50%/0 0 15% 15%;
 			background: linear-gradient(360deg, #44e4ba 0%, #28866b 100%);
 			.line{
