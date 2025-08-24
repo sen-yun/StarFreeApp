@@ -524,6 +524,10 @@
 			"path": "pages/space/reply",
 			"style": {}
 		},
+		{
+			"path": "pages/contents/webview",
+			"style": {}
+		},
 		//示例插件
 		{
 			"path": "pages/plugins/sy_example/home",
