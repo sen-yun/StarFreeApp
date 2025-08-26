@@ -535,7 +535,7 @@
 				"enablePullDownRefresh": true
 			}
 		},
-		//软件库插件
+		//森云-软件库插件
 		{
 			"path": "pages/plugins/sy_appbox/home",
 			"style": {
@@ -562,6 +562,146 @@
 		{
 			"path": "pages/plugins/sy_appbox/tipList",
 			"style": {}
+		},
+		//小祈愿-AI大模型插件
+		{
+			"path": "pages/plugins/xqy_gpt/home",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/plugins/xqy_gpt/all",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/plugins/xqy_gpt/chat",
+			"style": {}
+		},
+		{
+			"path": "pages/plugins/xqy_gpt/app",
+			"style": {}
+		},
+		{
+			"path": "pages/plugins/xqy_gpt/history",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/plugins/xqy_gpt/manage/gpt",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/plugins/xqy_gpt/manage/gptAdd",
+			"style": {}
+		},
+		{
+			"path": "pages/plugins/xqy_gpt/manage/gptchat",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
+		//小祈愿-头像框插件
+		{
+			"path": "pages/plugins/xqy_avatar_frame/home",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/plugins/xqy_avatar_frame/myFrame",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
+		//小祈愿-勋章插件
+		{
+			"path": "pages/plugins/xqy_medal/home",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/plugins/xqy_medal/myMedals",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
+		//小祈愿-小说插件
+		{
+			"path": "pages/plugins/xqy_novel/index",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/plugins/xqy_novel/home",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/plugins/xqy_novel/info",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/plugins/xqy_novel/read",
+			"style": {}
+		},
+		{
+			"path": "pages/plugins/xqy_novel/comments",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/plugins/xqy_novel/commentDetail",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/plugins/xqy_novel/writeComment",
+			"style": {}
+		},
+		{
+			"path": "pages/plugins/xqy_novel/bookshelf",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
+		//小祈愿-排行榜插件
+		{
+			"path": "pages/plugins/xqy_rank/index",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
+		//小祈愿-视频插件
+		{
+			"path": "pages/plugins/xqy_video/index",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/plugins/xqy_video/home",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/plugins/xqy_video/detail",
+			"style": {
+				"enablePullDownRefresh": true
+			}
 		}
 
 

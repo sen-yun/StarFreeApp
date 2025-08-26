@@ -267,6 +267,32 @@
 				</view>
 			</view>
 		</view>
+				<!-- GPT插件管理 -->
+		<view class="data-box" v-if="group=='administrator' && isGptPluginEnabled">
+			<view class="module-title">GPT插件管理</view>
+			<view class="index-sort grid col-4">
+				<view class="index-sort-box">
+					<waves itemClass="butclass">
+						<view class="index-sort-main" @tap="toLink('/pages/plugins/xqy_gpt/manage/gpt')">
+							<view class="index-sort-i">
+								<text class="cuIcon-magic"></text>
+							</view>
+							<view class="index-sort-text">大模型管理</view>
+						</view>
+					</waves>
+				</view>
+				<view class="index-sort-box">
+					<waves itemClass="butclass">
+						<view class="index-sort-main" @tap="toLink('/pages/plugins/xqy_gpt/manage/gptchat')">
+							<view class="index-sort-i">
+								<text class="cuIcon-messagefill"></text>
+							</view>
+							<view class="index-sort-text">聊天管理</view>
+						</view>
+					</waves>
+				</view>
+			</view>
+		</view>
 		<!-- 该项目为开源项目，请尊重作者劳动成果 -->
 		<!-- 允许用于合法的商业运营用途，但请保留版权信息。-->
 		<view class="data-box">
@@ -297,12 +323,13 @@
 				token: "",
 				version:this.$API.getAppVersion(),
 				allData: {
-				      allContents: 0,
-				      allComments: 0, 
-				      allShop: 0,
-				      allUsers: 0
-				    },
-				group: "",
+			      allContents: 0,
+			      allComments: 0, 
+			      allShop: 0,
+			      allUsers: 0
+			    },
+			group: "",
+			isGptPluginEnabled: false,
 				// 该项目为开源项目，请尊重作者劳动成果 
 				// 允许用于合法的商业运营用途，但请保留版权信息。
 				infoone: "",
@@ -352,7 +379,7 @@
 				that.token = localStorage.getItem('token');
 				that.getallData();
 			}
-
+			that.checkGptPluginStatus();		
 			that.userPurview();
 		},
 		onLoad() {
@@ -362,13 +389,22 @@
 			// #endif
 		},
 		methods: {
-			// 该项目为开源项目，请尊重作者劳动成果 
-			// 允许用于合法的商业运营用途，但请保留版权信息。
-			getUser(data) {
+				// 该项目为开源项目，请尊重作者劳动成果 
+				// 允许用于合法的商业运营用途，但请保留版权信息。
+				checkGptPluginStatus() {
 				var that = this;
-				localStorage.setItem('getuid', data.uid);
-				that.back();
+				var cachedPlugins = localStorage.getItem('getPlugins');
+				if (cachedPlugins) {
+					const pluginList = JSON.parse(cachedPlugins);
+					// 检查插件是否存在于插件列表中
+					that.isGptPluginEnabled = pluginList.includes('xqy_gpt');
+				}
 			},
+				getUser(data) {
+					var that = this;
+					localStorage.setItem('getuid', data.uid);
+					that.back();
+				},
 			back() {
 				uni.navigateBack({
 					delta: 1

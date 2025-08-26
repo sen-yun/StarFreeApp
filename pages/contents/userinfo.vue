@@ -37,9 +37,7 @@
 				<view class="user-info-main" style="background-color: transparent;">
 				  <view class="user-info-content" style="background: transparent;padding: 0upx 0upx 0upx 60upx;z-index: 99;">
 				    <view class="user-info-col" style="overflow:visible">
-				      <view class="user-header" style="width: 180upx;">
-				        <image :src="avatar" style="width: 180upx;height: 180upx;border: 6upx solid white;border-radius:90upx;background-color:white;"></image>
-				      </view>
+						<avatarItem :avatar="avatar" :uid="uid"></avatarItem>
 				    </view>
 					<div class="user-text" style="width: calc(100% - 200upx);color: black;text-align: center;">
 					  <div class="user-info-data col-3" style="padding:65upx 20upx 0upx 20upx;">
@@ -92,6 +90,10 @@
 				<text class="userlv" v-if="isvip" style="margin-left: 0px;background: linear-gradient(to bottom right, #f2ad5c, #e6216d,#901ccb);color:white;padding: 2upx 10upx;border-radius: 20upx;">VIP</text>
 				<text class="userlv" :style="getLvStyle(experience)"  :class="isvip ? '' : 'xyy'" style="padding: 2upx 10upx;">{{getLv(experience)}}</text>
 				<text class="userlv customize" style="border: 3upx solid black;color:black;padding: 2upx 10upx;border-radius: 40upx;background-color: transparent;" v-if="customize&&customize!=''">{{customize}}</text>
+			</view>
+			<!-- 勋章显示 -->
+			<view class="user-info-data-box" style="margin-top: 10upx;text-align: left;">
+				<medalItem :uid="uid"></medalItem>
 			</view>
 			<view class="user-info-data-box" style="margin-top: 10upx;text-align: center;margin-right: 0upx;">
 				<view v-if="uid==vid" class="userInfo-bottom-main grid2 col-2">
@@ -271,6 +273,10 @@
 	var owo = [];
 	// #endif
 	export default {
+		components: {
+			medalItem: () => import('../components/medalItem.vue'),
+			avatarItem: () => import('../components/avatarItem.vue')
+		},
 		data() {
 			return {
 				StatusBar: this.StatusBar,

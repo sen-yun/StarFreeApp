@@ -115,6 +115,84 @@
 								</view>
 							</waves>
 						</view>
+						<view class="index-sort-box" v-if="xqy_avatar_frame">
+							<waves itemClass="butclass">
+								<view class="index-sort-main" @tap="goPage('/pages/plugins/xqy_avatar_frame/home',true)">
+									<view class="index-sort-i"
+										style="border-radius: 20upx;background: linear-gradient(to bottom right, #ffb3ff, #ff66cc);box-shadow: #ff99dd59 0px 3px 5px 0px;">
+										<text class="cuIcon-pic" style="color:  #ffffff;"></text>
+									</view>
+									<view class="index-sort-text">
+										头像框
+									</view>
+								</view>
+							</waves>
+						</view>
+						<view class="index-sort-box" v-if="xqy_medal">
+							<waves itemClass="butclass">
+								<view class="index-sort-main" @tap="goPage('/pages/plugins/xqy_medal/home',true)">
+									<view class="index-sort-i"
+										style="border-radius: 20upx;background: linear-gradient(to bottom right, #ffd700, #ffb347);box-shadow: #ffcc0059 0px 3px 5px 0px;">
+										<text class="cuIcon-medal" style="color:  #ffffff;"></text>
+									</view>
+									<view class="index-sort-text">
+										勋章
+									</view>
+								</view>
+							</waves>
+						</view>
+						<view class="index-sort-box" v-if="xqy_video">
+							<waves itemClass="butclass">
+								<view class="index-sort-main" @tap="goPage('/pages/plugins/xqy_video/index',true)">
+									<view class="index-sort-i"
+										style="border-radius: 20upx;background: linear-gradient(to bottom right, #ff6b6b, #ee5a52);box-shadow: #ff555559 0px 3px 5px 0px;">
+										<text class="cuIcon-video" style="color:  #ffffff;"></text>
+									</view>
+									<view class="index-sort-text">
+										短视频
+									</view>
+								</view>
+							</waves>
+						</view>
+						<view class="index-sort-box" v-if="xqy_novel">
+							<waves itemClass="butclass">
+								<view class="index-sort-main" @tap="goPage('/pages/plugins/xqy_novel/index',true)">
+									<view class="index-sort-i"
+										style="border-radius: 20upx;background: linear-gradient(to bottom right, #74b9ff, #0984e3);box-shadow: #4a90e259 0px 3px 5px 0px;">
+										<text class="cuIcon-read" style="color:  #ffffff;"></text>
+									</view>
+									<view class="index-sort-text">
+										小说
+									</view>
+								</view>
+							</waves>
+						</view>
+						<view class="index-sort-box" v-if="xqy_gpt">
+							<waves itemClass="butclass">
+								<view class="index-sort-main" @tap="goPage('/pages/plugins/xqy_gpt/home',true)">
+									<view class="index-sort-i"
+										style="border-radius: 20upx;background: linear-gradient(to bottom right, #a29bfe, #6c5ce7);box-shadow: #8b7ed859 0px 3px 5px 0px;">
+										<text class="cuIcon-magic" style="color:  #ffffff;"></text>
+									</view>
+									<view class="index-sort-text">
+										AI助手
+									</view>
+								</view>
+							</waves>
+						</view>
+						<view class="index-sort-box" v-if="xqy_rank">
+							<waves itemClass="butclass">
+								<view class="index-sort-main" @tap="goPage('/pages/plugins/xqy_rank/index',true)">
+									<view class="index-sort-i"
+										style="border-radius: 20upx;background: linear-gradient(to bottom right, #fd79a8, #e84393);box-shadow: #f06292 0px 3px 5px 0px;">
+										<text class="cuIcon-rank" style="color:  #ffffff;"></text>
+									</view>
+									<view class="index-sort-text">
+										排行榜
+									</view>
+								</view>
+							</waves>
+						</view>
 						<view class="index-sort-box">
 							<waves itemClass="butclass">
 								<view class="index-sort-main" @tap="toShop">
@@ -474,6 +552,12 @@
 				metaCircleList: [],
 				metaCircleMoreTxt: "加载更多",
 				sy_appbox: false,
+				xqy_avatar_frame: false,
+				xqy_medal: false,
+				xqy_video: false,
+				xqy_novel: false,
+				xqy_gpt: false,
+				xqy_rank: false,
 
 			}
 		},
@@ -585,7 +669,13 @@
 			if (cachedPlugins) {
 				const pluginList = JSON.parse(cachedPlugins);
 				// 检查插件是否存在于插件列表中
-				that.sy_appbox = pluginList.includes('sy_appbox'); 
+				that.sy_appbox = pluginList.includes('sy_appbox');
+				that.xqy_avatar_frame = pluginList.includes('xqy_avatar_frame');
+				that.xqy_medal = pluginList.includes('xqy_medal');
+				that.xqy_video = pluginList.includes('xqy_video');
+				that.xqy_novel = pluginList.includes('xqy_novel');
+				that.xqy_gpt = pluginList.includes('xqy_gpt');
+				that.xqy_rank = pluginList.includes('xqy_rank');
 			}
 
 		},
